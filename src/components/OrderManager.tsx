@@ -76,47 +76,48 @@ const OrderManager: React.FC = () => {
   const urgentCount = orders.filter(order => order.status === 'pendiente' && order.isUrgent).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 p-4 pb-safe">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+        {/* Header - Optimized for mobile */}
+        <div className="text-center mb-6">
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-2">
             Gestión de Pedidos
           </h1>
-          <p className="text-gray-600">Sistema de pedidos - Empresa Familiar</p>
+          <p className="text-sm md:text-base text-gray-600">Sistema de pedidos - Empresa Familiar</p>
           
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-4 mt-4">
-            <Badge variant="secondary" className="px-3 py-1">
+          {/* Stats - Better spacing for mobile */}
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-4">
+            <Badge variant="secondary" className="px-2 py-1 text-xs md:text-sm">
               Pendientes: {pendingCount}
             </Badge>
-            <Badge variant="default" className="px-3 py-1">
+            <Badge variant="default" className="px-2 py-1 text-xs md:text-sm">
               Completados: {completedCount}
             </Badge>
             {urgentCount > 0 && (
-              <Badge variant="destructive" className="px-3 py-1">
+              <Badge variant="destructive" className="px-2 py-1 text-xs md:text-sm">
                 Urgentes: {urgentCount}
               </Badge>
             )}
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        {/* Action Buttons - Mobile optimized */}
+        <div className="flex flex-col gap-3 mb-6">
           <Button
             onClick={() => setShowForm(!showForm)}
-            className="bg-amber-600 hover:bg-amber-700 flex-1 sm:flex-none"
+            className="bg-amber-600 hover:bg-amber-700 w-full md:w-auto"
             size="lg"
           >
             {showForm ? 'Cancelar' : 'Nuevo Pedido'}
           </Button>
 
-          {/* Filter Buttons */}
-          <div className="flex gap-2 flex-1 justify-center sm:justify-end">
+          {/* Filter Buttons - Mobile friendly */}
+          <div className="flex gap-2 w-full">
             <Button
               onClick={() => setFilter('todos')}
               variant={filter === 'todos' ? 'default' : 'outline'}
               size="sm"
+              className="flex-1"
             >
               Todos
             </Button>
@@ -124,6 +125,7 @@ const OrderManager: React.FC = () => {
               onClick={() => setFilter('pendiente')}
               variant={filter === 'pendiente' ? 'default' : 'outline'}
               size="sm"
+              className="flex-1"
             >
               Pendientes
             </Button>
@@ -131,6 +133,7 @@ const OrderManager: React.FC = () => {
               onClick={() => setFilter('completado')}
               variant={filter === 'completado' ? 'default' : 'outline'}
               size="sm"
+              className="flex-1"
             >
               Completados
             </Button>
@@ -146,7 +149,7 @@ const OrderManager: React.FC = () => {
         <div className="space-y-4">
           {sortedOrders.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">
+              <p className="text-gray-500 text-base md:text-lg">
                 {filter === 'todos' 
                   ? 'No hay pedidos registrados aún'
                   : `No hay pedidos ${filter === 'pendiente' ? 'pendientes' : 'completados'}`

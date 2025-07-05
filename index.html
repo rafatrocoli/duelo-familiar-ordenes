@@ -3,7 +3,7 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Gestión de Pedidos - Empresa Familiar</title>
     <meta name="description" content="Sistema de gestión de pedidos para empresa familiar de ataúdes" />
     <meta name="author" content="Lovable" />
@@ -16,6 +16,21 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- iOS specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Gestión Pedidos" />
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#f59e0b" />
+    
+    <!-- Safe area insets for iPhone X+ -->
+    <style>
+      body {
+        padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      }
+    </style>
   </head>
 
   <body>
