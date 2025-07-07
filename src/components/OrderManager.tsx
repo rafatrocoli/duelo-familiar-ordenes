@@ -4,12 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
+import FloatingAddButton from './FloatingAddButton';
+import BottomNavigation, { Department } from './BottomNavigation';
 import { Order, OrderStatus } from '@/types/order';
 
 const OrderManager: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<'todos' | OrderStatus>('todos');
   const [showForm, setShowForm] = useState(false);
+  const [activeDepartment, setActiveDepartment] = useState<Department>('montaje');
 
   // Load orders from localStorage on component mount
   useEffect(() => {
@@ -75,83 +78,118 @@ const OrderManager: React.FC = () => {
   const completedCount = orders.filter(order => order.status === 'completado').length;
   const urgentCount = orders.filter(order => order.status === 'pendiente' && order.isUrgent).length;
 
+  const getDepartmentTitle = (department: Department) => {
+    const titles = {
+      montaje: 'Montaje',
+      carpinteria: 'Carpintería',
+      pintura: 'Pintura'
+    };
+    return titles[department];
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50 p-4 pb-safe">
-      <div className="max-w-4xl mx-auto">
-        {/* Header - Optimized for mobile */}
-        <div className="text-center mb-6">
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-2">
-            Gestión de Pedidos
-          </h1>
-          <p className="text-sm md:text-base text-gray-600">Sistema de pedidos - Empresa Familiar</p>
+    <div className="min-h-screen bg-gray-50 pb-24">
+      <div className="max-w-md mx-auto bg-white min-h-screen">
+        {/* Header - Estilo Revolut */}
+        <div className="bg-white px-6 py-6 border-b border-gray-100">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">
+              {getDepartmentTitle(activeDepartment)}
+            </h1>
+            <p className="text-sm text-gray-500">Gestión de pedidos</p>
+          </div>
           
-          {/* Stats - Better spacing for mobile */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-4">
-            <Badge variant="secondary" className="px-2 py-1 text-xs md:text-sm">
-              Pendientes: {pendingCount}
-            </Badge>
-            <Badge variant="default" className="px-2 py-1 text-xs md:text-sm">
-              Completados: {completedCount}
-            </Badge>
+          {/* Stats - Estilo moderno */}
+          <div className="flex justify-center gap-3 mt-4">
+            <div className="bg-gray-50 rounded-xl px-3 py-2 text-center">
+              <div className="text-lg font-bold text-gray-900">{pendingCount}</div>
+              <div className="text-xs text-gray-500">Pendientes</div>
+            </div>
+            <div className="bg-gray-50 rounded-xl px-3 py-2 text-center">
+              <div className="text-lg font-bold text-gray-900">{completedCount}</div>
+              <div className="text-xs text-gray-500">Completados</div>
+            </div>
             {urgentCount > 0 && (
-              <Badge variant="destructive" className="px-2 py-1 text-xs md:text-sm">
-                Urgentes: {urgentCount}
-              </Badge>
+              <div className="bg-red-50 rounded-xl px-3 py-2 text-center">
+                <div className="text-lg font-bold text-red-600">{urgentCount}</div>
+                <div className="text-xs text-red-500">Urgentes</div>
+              </div>
             )}
           </div>
         </div>
 
-        {/* Action Buttons - Mobile optimized */}
-        <div className="flex flex-col gap-3 mb-6">
-          <Button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-amber-600 hover:bg-amber-700 w-full md:w-auto"
-            size="lg"
-          >
-            {showForm ? 'Cancelar' : 'Nuevo Pedido'}
-          </Button>
-
-          {/* Filter Buttons - Mobile friendly */}
-          <div className="flex gap-2 w-full">
+        {/* Filter Buttons - Estilo Revolut */}
+        <div className="px-6 py-4 bg-white border-b border-gray-100">
+          <div className="flex bg-gray-50 rounded-xl p-1">
             <Button
               onClick={() => setFilter('todos')}
-              variant={filter === 'todos' ? 'default' : 'outline'}
+              variant="ghost"
               size="sm"
-              className="flex-1"
+              className={`flex-1 rounded-lg text-sm font-medium ${
+                filter === 'todos' 
+                  ? 'bg-white shadow-sm text-gray-900' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
               Todos
             </Button>
             <Button
               onClick={() => setFilter('pendiente')}
-              variant={filter === 'pendiente' ? 'default' : 'outline'}
+              variant="ghost"
               size="sm"
-              className="flex-1"
+              className={`flex-1 rounded-lg text-sm font-medium ${
+                filter === 'pendiente' 
+                  ? 'bg-white shadow-sm text-gray-900' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
               Pendientes
             </Button>
             <Button
               onClick={() => setFilter('completado')}
-              variant={filter === 'completado' ? 'default' : 'outline'}
+              variant="ghost"
               size="sm"
-              className="flex-1"
+              className={`flex-1 rounded-lg text-sm font-medium ${
+                filter === 'completado' 
+                  ? 'bg-white shadow-sm text-gray-900' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
             >
               Completados
             </Button>
           </div>
         </div>
 
-        {/* Order Form */}
+        {/* Order Form Modal */}
         {showForm && (
-          <OrderForm onAddOrder={addOrder} />
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
+            <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900">Nuevo Pedido</h2>
+                  <Button
+                    onClick={() => setShowForm(false)}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-500"
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+                <OrderForm onAddOrder={addOrder} />
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Orders List */}
-        <div className="space-y-4">
+        <div className="px-6 py-4 space-y-3">
           {sortedOrders.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-base md:text-lg">
+              <div className="text-gray-400 text-lg mb-2">📋</div>
+              <p className="text-gray-500 text-base">
                 {filter === 'todos' 
-                  ? 'No hay pedidos registrados aún'
+                  ? 'No hay pedidos registrados'
                   : `No hay pedidos ${filter === 'pendiente' ? 'pendientes' : 'completados'}`
                 }
               </p>
@@ -166,6 +204,15 @@ const OrderManager: React.FC = () => {
             ))
           )}
         </div>
+
+        {/* Floating Add Button */}
+        <FloatingAddButton onClick={() => setShowForm(true)} />
+
+        {/* Bottom Navigation */}
+        <BottomNavigation 
+          activeDepartment={activeDepartment}
+          onDepartmentChange={setActiveDepartment}
+        />
       </div>
     </div>
   );
