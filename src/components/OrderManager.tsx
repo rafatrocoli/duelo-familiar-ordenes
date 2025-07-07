@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -88,7 +87,7 @@ const OrderManager: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-20">
       <div className="max-w-md mx-auto bg-white min-h-screen">
         {/* Header - Estilo Revolut */}
         <div className="bg-white px-6 py-6 border-b border-gray-100">
@@ -183,7 +182,7 @@ const OrderManager: React.FC = () => {
         )}
 
         {/* Orders List */}
-        <div className="px-6 py-4 space-y-3">
+        <div className="px-6 py-4 space-y-3 pb-20">
           {sortedOrders.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-gray-400 text-lg mb-2">📋</div>
