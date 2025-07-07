@@ -15,28 +15,28 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onDepartmentChange 
 }) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-2 pb-safe">
+    <div className="fixed bottom-8 left-4 right-4 z-50 bg-black rounded-2xl px-4 py-3 shadow-lg">
       <Tabs value={activeDepartment} onValueChange={(value) => onDepartmentChange(value as Department)}>
-        <TabsList className="grid w-full grid-cols-3 bg-gray-50 rounded-xl p-1">
+        <TabsList className="grid w-full grid-cols-3 bg-transparent rounded-xl p-0">
           <TabsTrigger 
             value="montaje" 
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 text-gray-500"
+            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
           >
-            <Settings className="w-4 h-4" />
+            <Settings className="w-5 h-5" />
             Montaje
           </TabsTrigger>
           <TabsTrigger 
             value="carpinteria"
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 text-gray-500"
+            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
           >
-            <Hammer className="w-4 h-4" />
+            <Hammer className="w-5 h-5" />
             Carpintería
           </TabsTrigger>
           <TabsTrigger 
             value="pintura"
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 text-gray-500"
+            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
           >
-            <Palette className="w-4 h-4" />
+            <Palette className="w-5 h-5" />
             Pintura
           </TabsTrigger>
         </TabsList>
