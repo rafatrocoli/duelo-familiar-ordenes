@@ -20,21 +20,21 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
         <TabsList className="grid w-full grid-cols-3 bg-transparent rounded-xl p-0">
           <TabsTrigger 
             value="montaje" 
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
+            className="flex flex-col items-center justify-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Settings className="w-5 h-5" />
             Montaje
           </TabsTrigger>
           <TabsTrigger 
             value="carpinteria"
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
+            className="flex flex-col items-center justify-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Hammer className="w-5 h-5" />
             Carpintería
           </TabsTrigger>
           <TabsTrigger 
             value="pintura"
-            className="flex flex-col items-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors"
+            className="flex flex-col items-center justify-center gap-1 py-3 px-4 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-gray-400 hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Palette className="w-5 h-5" />
             Pintura
