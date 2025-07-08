@@ -80,7 +80,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                 {order.products.map((product, index) => (
                   <div key={index} className="text-sm text-gray-600">
                     <span className="font-medium">
-                      {order.products.length > 1 ? `Producto ${index + 1}: ` : 'Modelo: '}
+                      {order.products.length > 1 ? `Pedido ${index + 1}: ` : 'Modelo: '}
                     </span>
                     {product.model}
                     {product.color && <span> - {product.color}</span>}
@@ -115,7 +115,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             {order.products.map((product, index) => 
               product.comments ? (
                 <p key={index} className="text-sm text-gray-600 italic mb-1">
-                  {order.products.length > 1 && `Producto ${index + 1}: `}"{product.comments}"
+                  {order.products.length > 1 && `Pedido ${index + 1}: `}"{product.comments}"
                 </p>
               ) : null
             )}

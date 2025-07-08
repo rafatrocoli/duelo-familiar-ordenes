@@ -143,10 +143,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
 
       <Separator className="my-6" />
 
-      {/* Products Section */}
+      {/* Orders Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900">Productos</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Pedidos</h3>
           <Button
             type="button"
             onClick={addProduct}
@@ -155,14 +155,14 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
             className="flex items-center gap-2 text-black border-black hover:bg-black hover:text-white"
           >
             <Plus size={16} />
-            Añadir otro producto
+            Añadir otro pedido
           </Button>
         </div>
 
         {products.map((product, index) => (
           <div key={index} className="border border-gray-200 rounded-xl p-4 space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="font-medium text-gray-900">Producto {index + 1}</h4>
+              <h4 className="font-medium text-gray-900">Pedido {index + 1}</h4>
               {products.length > 1 && (
                 <Button
                   type="button"
@@ -266,7 +266,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
                 <Textarea
                   value={product.comments}
                   onChange={(e) => updateProduct(index, 'comments', e.target.value)}
-                  placeholder="Observaciones para este producto..."
+                  placeholder="Observaciones para este pedido..."
                   className="rounded-xl border-gray-200 px-4 py-3 focus:ring-2 focus:ring-black focus:border-transparent min-h-[80px]"
                   rows={3}
                 />
