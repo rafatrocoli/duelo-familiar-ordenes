@@ -17,7 +17,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   return (
     <div className="fixed bottom-8 left-4 right-4 z-50 bg-black rounded-2xl px-6 py-4 shadow-lg flex items-center justify-center">
       <Tabs value={activeDepartment} onValueChange={(value) => onDepartmentChange(value as Department)}>
-        <TabsList className="grid w-full grid-cols-5 bg-transparent rounded-xl p-0 gap-4 h-14">
+        <TabsList className="flex w-full justify-between bg-transparent rounded-xl p-0 h-14">
           <TabsTrigger 
             value="pedidos" 
             className="flex items-center justify-center h-14 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
