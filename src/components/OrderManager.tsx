@@ -248,7 +248,7 @@ const OrderManager: React.FC = () => {
 
 
         {/* Bottom Navigation */}
-        {activeDepartment !== 'nuevo' && (
+        {!showForm && (
           <BottomNavigation 
             activeDepartment={activeDepartment}
             onDepartmentChange={handleDepartmentChange}
