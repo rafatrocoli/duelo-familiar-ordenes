@@ -17,7 +17,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
   const [customerName, setCustomerName] = useState('');
   const [destination, setDestination] = useState('');
   const [model, setModel] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState<number | ''>('');
   const [usageType, setUsageType] = useState<'encinerar' | 'entierro'>('entierro');
   const [color, setColor] = useState('');
   const [coffeeType, setCoffeeType] = useState<OrderType>('clasico');
@@ -42,7 +42,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!customerName.trim() || !destination.trim() || !model.trim()) {
+    if (!customerName.trim() || !destination.trim() || !model.trim() || quantity === '' || quantity <= 0) {
       return;
     }
 
@@ -50,7 +50,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
       customerName: customerName.trim(),
       destination: destination.trim(),
       model: model.trim(),
-      quantity,
+      quantity: typeof quantity === 'number' ? quantity : 1,
       usageType,
       color: color.trim(),
       coffeeType,
@@ -63,7 +63,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
       setCustomerName('');
       setDestination('');
       setModel('');
-      setQuantity(1);
+      setQuantity('');
       setUsageType('entierro');
       setColor('');
       setCoffeeType('clasico');
@@ -129,7 +129,8 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
             type="number"
             min="1"
             value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+            onChange={(e) => setQuantity(e.target.value === '' ? '' : parseInt(e.target.value))}
+            placeholder="ej: 50"
             className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
             required
           />
