@@ -5,6 +5,11 @@ export type OrderStatus = 'pendiente' | 'completado';
 export interface Order {
   id: string;
   customerName: string;
+  destination: string;
+  model: string;
+  quantity: number;
+  usageType: 'encinerar' | 'entierro';
+  color: string;
   orderDate: Date;
   coffeeType: OrderType;
   isUrgent: boolean;

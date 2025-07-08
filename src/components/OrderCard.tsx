@@ -51,9 +51,22 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
                 <AlertCircle className="w-4 h-4 text-red-500" />
               )}
             </div>
-            <p className="text-sm text-gray-500">
-              {format(order.orderDate, "dd MMM, HH:mm", { locale: es })}
-            </p>
+            <div className="space-y-1">
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Destino:</span> {order.destination}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Modelo:</span> {order.model} 
+                {order.color && <span> - {order.color}</span>}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Cantidad:</span> {order.quantity} | 
+                <span className="font-medium"> Tipo:</span> {order.usageType}
+              </p>
+              <p className="text-sm text-gray-500">
+                {format(order.orderDate, "dd MMM, HH:mm", { locale: es })}
+              </p>
+            </div>
           </div>
           
           <div className="flex flex-col items-end gap-2">

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
-import FloatingAddButton from './FloatingAddButton';
+
 import BottomNavigation, { Department } from './BottomNavigation';
 import { Order, OrderStatus } from '@/types/order';
 
@@ -11,7 +11,7 @@ const OrderManager: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<'todos' | OrderStatus>('todos');
   const [showForm, setShowForm] = useState(false);
-  const [activeDepartment, setActiveDepartment] = useState<Department>('montaje');
+  const [activeDepartment, setActiveDepartment] = useState<Department>('pedidos');
 
   // Load orders from localStorage on component mount
   useEffect(() => {
@@ -67,9 +67,18 @@ const OrderManager: React.FC = () => {
     });
   };
 
-  const filteredOrders = filter === 'todos' 
-    ? orders 
-    : orders.filter(order => order.status === filter);
+  const filteredOrders = (() => {
+    let filtered = filter === 'todos' ? orders : orders.filter(order => order.status === filter);
+    
+    // Filter by department if not on "pedidos" view
+    if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
+      // For now, we'll show all orders in each department since we don't have department assignment logic yet
+      // This can be extended later when department assignment is implemented
+      filtered = filtered;
+    }
+    
+    return filtered;
+  })();
 
   const sortedOrders = sortOrders(filteredOrders);
 
@@ -79,11 +88,21 @@ const OrderManager: React.FC = () => {
 
   const getDepartmentTitle = (department: Department) => {
     const titles = {
+      pedidos: 'Todos los Pedidos',
       montaje: 'Montaje',
       carpinteria: 'Carpintería',
-      pintura: 'Pintura'
+      pintura: 'Pintura',
+      nuevo: 'Nuevo Pedido'
     };
     return titles[department];
+  };
+
+  const handleDepartmentChange = (department: Department) => {
+    if (department === 'nuevo') {
+      setShowForm(true);
+    } else {
+      setActiveDepartment(department);
+    }
   };
 
   return (
@@ -204,13 +223,11 @@ const OrderManager: React.FC = () => {
           )}
         </div>
 
-        {/* Floating Add Button */}
-        <FloatingAddButton onClick={() => setShowForm(true)} />
 
         {/* Bottom Navigation */}
         <BottomNavigation 
           activeDepartment={activeDepartment}
-          onDepartmentChange={setActiveDepartment}
+          onDepartmentChange={handleDepartmentChange}
         />
       </div>
     </div>
