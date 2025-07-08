@@ -76,14 +76,21 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Destino:</span> {order.destination}
               </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Modelo:</span> {order.model} 
-                {order.color && <span> - {order.color}</span>}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Cantidad:</span> {order.quantity} | 
-                <span className="font-medium"> Tipo:</span> {order.usageType}
-              </p>
+              <div className="space-y-1">
+                {order.products.map((product, index) => (
+                  <div key={index} className="text-sm text-gray-600">
+                    <span className="font-medium">
+                      {order.products.length > 1 ? `Producto ${index + 1}: ` : 'Modelo: '}
+                    </span>
+                    {product.model}
+                    {product.color && <span> - {product.color}</span>}
+                    <span className="ml-2">
+                      <span className="font-medium">Cantidad:</span> {product.quantity} | 
+                      <span className="font-medium"> Tipo:</span> {product.usageType}
+                    </span>
+                  </div>
+                ))}
+              </div>
               <p className="text-sm text-gray-500">
                 {format(order.orderDate, "dd MMM, HH:mm", { locale: es })}
               </p>
@@ -102,11 +109,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           </div>
         </div>
 
-        {order.comments && (
+        {order.products.some(product => product.comments) && (
           <div className="bg-gray-50 rounded-xl p-3 mb-3">
-            <p className="text-sm text-gray-600 italic">
-              "{order.comments}"
-            </p>
+            <p className="text-xs font-medium text-gray-500 mb-1">Observaciones:</p>
+            {order.products.map((product, index) => 
+              product.comments ? (
+                <p key={index} className="text-sm text-gray-600 italic mb-1">
+                  {order.products.length > 1 && `Producto ${index + 1}: `}"{product.comments}"
+                </p>
+              ) : null
+            )}
           </div>
         )}
 
