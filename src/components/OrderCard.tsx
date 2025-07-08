@@ -6,15 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { Order } from '@/types/order';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Check, Clock, AlertCircle } from 'lucide-react';
+import { Check, Clock, AlertCircle, Pencil, Trash2 } from 'lucide-react';
 
 interface OrderCardProps {
   order: Order;
   onToggleStatus: (id: string) => void;
   activeDepartment?: string;
+  onEditOrder?: (order: Order) => void;
+  onDeleteOrder?: (id: string) => void;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment, onEditOrder, onDeleteOrder }) => {
   const getTypeLabel = (type: string) => {
     const types = {
       clasico: 'Clásico',
@@ -118,29 +120,52 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             {order.status === 'completado' ? 'Completado' : 'Pendiente'}
           </Badge>
           
-          {shouldShowCompleteButton() && (
-            <Button
-              onClick={() => onToggleStatus(order.id)}
-              size="sm"
-              className={`rounded-full px-4 ${
-                order.status === 'completado' 
-                  ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
-                  : 'bg-black text-white hover:bg-gray-800'
-              }`}
-            >
-              {order.status === 'completado' ? (
-                <>
-                  <Clock className="w-4 h-4 mr-1" />
-                  Reabrir
-                </>
-              ) : (
-                <>
-                  <Check className="w-4 h-4 mr-1" />
-                  Completar
-                </>
-              )}
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* Edit and Delete icons - only in Pedidos tab */}
+            {activeDepartment === 'pedidos' && onEditOrder && onDeleteOrder && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => onEditOrder(order)}
+                  className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                  aria-label="Editar pedido"
+                >
+                  <Pencil className="w-4 h-4 text-gray-400" />
+                </button>
+                <button
+                  onClick={() => onDeleteOrder(order.id)}
+                  className="p-2 rounded-full hover:bg-red-50 transition-colors"
+                  aria-label="Eliminar pedido"
+                >
+                  <Trash2 className="w-4 h-4 text-red-500" />
+                </button>
+              </div>
+            )}
+            
+            {/* Complete button - only in department tabs */}
+            {shouldShowCompleteButton() && (
+              <Button
+                onClick={() => onToggleStatus(order.id)}
+                size="sm"
+                className={`rounded-full px-4 ${
+                  order.status === 'completado' 
+                    ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
+              >
+                {order.status === 'completado' ? (
+                  <>
+                    <Clock className="w-4 h-4 mr-1" />
+                    Reabrir
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-4 h-4 mr-1" />
+                    Completar
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

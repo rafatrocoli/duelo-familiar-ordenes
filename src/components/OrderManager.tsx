@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
-
 import BottomNavigation, { Department } from './BottomNavigation';
 import { Order, OrderStatus } from '@/types/order';
 
@@ -12,6 +13,8 @@ const OrderManager: React.FC = () => {
   const [filter, setFilter] = useState<'todos' | OrderStatus>('todos');
   const [showForm, setShowForm] = useState(false);
   const [activeDepartment, setActiveDepartment] = useState<Department>('pedidos');
+  const [editingOrder, setEditingOrder] = useState<Order | null>(null);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
 
   // Load orders from localStorage on component mount
   useEffect(() => {
@@ -125,6 +128,32 @@ const OrderManager: React.FC = () => {
       setShowForm(true);
     } else {
       setActiveDepartment(department);
+    }
+  };
+
+  const handleEditOrder = (order: Order) => {
+    setEditingOrder(order);
+  };
+
+  const handleUpdateOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => {
+    if (editingOrder) {
+      setOrders(prev => prev.map(order => 
+        order.id === editingOrder.id 
+          ? { ...order, ...orderData }
+          : order
+      ));
+      setEditingOrder(null);
+    }
+  };
+
+  const handleDeleteOrder = (id: string) => {
+    setOrderToDelete(id);
+  };
+
+  const confirmDeleteOrder = () => {
+    if (orderToDelete) {
+      setOrders(prev => prev.filter(order => order.id !== orderToDelete));
+      setOrderToDelete(null);
     }
   };
 
@@ -242,11 +271,48 @@ const OrderManager: React.FC = () => {
                 order={order}
                 onToggleStatus={toggleOrderStatus}
                 activeDepartment={activeDepartment}
+                onEditOrder={handleEditOrder}
+                onDeleteOrder={handleDeleteOrder}
               />
             ))
           )}
         </div>
 
+
+        {/* Edit Order Modal */}
+        <Dialog open={!!editingOrder} onOpenChange={() => setEditingOrder(null)}>
+          <DialogContent className="max-w-md mx-auto">
+            <DialogHeader>
+              <DialogTitle>Editar Pedido</DialogTitle>
+            </DialogHeader>
+            {editingOrder && (
+              <OrderForm 
+                onAddOrder={handleUpdateOrder}
+                initialData={editingOrder}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={!!orderToDelete} onOpenChange={() => setOrderToDelete(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>¿Eliminar pedido?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta acción no se puede deshacer. El pedido será eliminado permanentemente.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setOrderToDelete(null)}>
+                Cancelar
+              </AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDeleteOrder} className="bg-red-600 hover:bg-red-700">
+                Eliminar
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* Bottom Navigation */}
         {!showForm && (

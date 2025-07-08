@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,9 +10,10 @@ import { Order, OrderType } from '@/types/order';
 
 interface OrderFormProps {
   onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => void;
+  initialData?: Order;
 }
 
-const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder }) => {
+const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
   const [customerName, setCustomerName] = useState('');
   const [destination, setDestination] = useState('');
   const [model, setModel] = useState('');
@@ -22,6 +23,21 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder }) => {
   const [coffeeType, setCoffeeType] = useState<OrderType>('clasico');
   const [isUrgent, setIsUrgent] = useState(false);
   const [comments, setComments] = useState('');
+
+  // Populate form with initialData if provided (for editing)
+  useEffect(() => {
+    if (initialData) {
+      setCustomerName(initialData.customerName);
+      setDestination(initialData.destination);
+      setModel(initialData.model);
+      setQuantity(initialData.quantity);
+      setUsageType(initialData.usageType);
+      setColor(initialData.color || '');
+      setCoffeeType(initialData.coffeeType);
+      setIsUrgent(initialData.isUrgent);
+      setComments(initialData.comments || '');
+    }
+  }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,16 +58,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder }) => {
       comments: comments.trim(),
     });
 
-    // Reset form
-    setCustomerName('');
-    setDestination('');
-    setModel('');
-    setQuantity(1);
-    setUsageType('entierro');
-    setColor('');
-    setCoffeeType('clasico');
-    setIsUrgent(false);
-    setComments('');
+    // Reset form only if not editing
+    if (!initialData) {
+      setCustomerName('');
+      setDestination('');
+      setModel('');
+      setQuantity(1);
+      setUsageType('entierro');
+      setColor('');
+      setCoffeeType('clasico');
+      setIsUrgent(false);
+      setComments('');
+    }
   };
 
   return (
@@ -193,7 +211,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder }) => {
         type="submit" 
         className="w-full bg-black hover:bg-gray-800 text-white rounded-xl h-12 font-medium"
       >
-        Registrar Pedido
+        {initialData ? 'Actualizar Pedido' : 'Registrar Pedido'}
       </Button>
     </form>
   );
