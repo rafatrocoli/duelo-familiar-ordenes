@@ -20,38 +20,33 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
         <TabsList className="grid w-full grid-cols-5 bg-transparent rounded-xl p-0 gap-2">
           <TabsTrigger 
             value="pedidos" 
-            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
+            className="flex flex-col items-center justify-center py-3 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Clipboard className="w-5 h-5" />
-            Pedidos
+            <Clipboard className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="carpinteria"
-            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
+            className="flex flex-col items-center justify-center py-3 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Hammer className="w-5 h-5" />
-            Carpintería
+            <Hammer className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="nuevo"
-            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
+            className="flex flex-col items-center justify-center py-3 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Plus className="w-5 h-5" />
-            Nuevo
+            <Plus className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="montaje" 
-            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
+            className="flex flex-col items-center justify-center py-3 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Settings className="w-5 h-5" />
-            Montaje
+            <Settings className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="pintura"
-            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
+            className="flex flex-col items-center justify-center py-3 px-2 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Palette className="w-5 h-5" />
-            Pintura
+            <Palette className="w-6 h-6" />
           </TabsTrigger>
         </TabsList>
       </Tabs>
