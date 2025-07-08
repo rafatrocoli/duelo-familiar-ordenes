@@ -1,6 +1,7 @@
 
 export type OrderType = 'clasico' | 'ecologico' | 'premium';
 export type OrderStatus = 'pendiente' | 'completado';
+export type OrderPhase = 'carpinteria' | 'pintura' | 'montaje' | 'completado';
 
 export interface Order {
   id: string;
@@ -15,4 +16,5 @@ export interface Order {
   isUrgent: boolean;
   comments: string;
   status: OrderStatus;
+  phase: OrderPhase;
 }

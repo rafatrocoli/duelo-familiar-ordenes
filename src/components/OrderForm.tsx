@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Order, OrderType } from '@/types/order';
 
 interface OrderFormProps {
-  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status'>) => void;
+  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => void;
 }
 
 const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder }) => {

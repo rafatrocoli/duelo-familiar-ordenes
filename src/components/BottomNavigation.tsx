@@ -23,35 +23,35 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Clipboard className="w-5 h-5" />
-            Pedidos
+            📋 Pedidos
           </TabsTrigger>
           <TabsTrigger 
             value="carpinteria"
             className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Hammer className="w-5 h-5" />
-            Carpintería
+            🪚 Carpintería
           </TabsTrigger>
           <TabsTrigger 
             value="nuevo"
-            className="flex flex-col items-center justify-center gap-1 py-2 px-2 rounded-full bg-white text-black hover:bg-gray-100 transition-all duration-200 hover:scale-105 shadow-lg min-h-[56px] min-w-[56px] mx-2"
+            className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
-            <Plus className="w-6 h-6" />
-            <span className="text-xs font-medium">Nuevo</span>
+            <Plus className="w-5 h-5" />
+            ➕ Nuevo
           </TabsTrigger>
           <TabsTrigger 
             value="montaje" 
             className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Settings className="w-5 h-5" />
-            Montaje
+            ⚙️ Montaje
           </TabsTrigger>
           <TabsTrigger 
             value="pintura"
             className="flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg text-xs font-medium data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors min-h-[60px]"
           >
             <Palette className="w-5 h-5" />
-            Pintura
+            🎨 Pintura
           </TabsTrigger>
         </TabsList>
       </Tabs>

@@ -30,12 +30,13 @@ const OrderManager: React.FC = () => {
     localStorage.setItem('coffin-orders', JSON.stringify(orders));
   }, [orders]);
 
-  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status'>) => {
+  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => {
     const newOrder: Order = {
       ...orderData,
       id: Date.now().toString(),
       orderDate: new Date(),
-      status: 'pendiente'
+      status: 'pendiente',
+      phase: 'carpinteria'
     };
 
     setOrders(prev => [newOrder, ...prev]);
@@ -43,11 +44,35 @@ const OrderManager: React.FC = () => {
   };
 
   const toggleOrderStatus = (id: string) => {
-    setOrders(prev => prev.map(order => 
-      order.id === id 
-        ? { ...order, status: order.status === 'pendiente' ? 'completado' : 'pendiente' }
-        : order
-    ));
+    setOrders(prev => prev.map(order => {
+      if (order.id === id) {
+        if (order.status === 'completado') {
+          // Revert to previous phase
+          return { ...order, status: 'pendiente' };
+        } else {
+          // Complete current phase and move to next
+          const phaseOrder = ['carpinteria', 'pintura', 'montaje'] as const;
+          const currentPhaseIndex = phaseOrder.indexOf(order.phase as any);
+          
+          if (currentPhaseIndex < phaseOrder.length - 1) {
+            // Move to next phase
+            return { 
+              ...order, 
+              phase: phaseOrder[currentPhaseIndex + 1],
+              status: 'pendiente'
+            };
+          } else {
+            // Complete final phase
+            return { 
+              ...order, 
+              status: 'completado',
+              phase: 'completado'
+            };
+          }
+        }
+      }
+      return order;
+    }));
   };
 
   const sortOrders = (orders: Order[]) => {
@@ -70,11 +95,9 @@ const OrderManager: React.FC = () => {
   const filteredOrders = (() => {
     let filtered = filter === 'todos' ? orders : orders.filter(order => order.status === filter);
     
-    // Filter by department if not on "pedidos" view
+    // Filter by department phase
     if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
-      // For now, we'll show all orders in each department since we don't have department assignment logic yet
-      // This can be extended later when department assignment is implemented
-      filtered = filtered;
+      filtered = filtered.filter(order => order.phase === activeDepartment);
     }
     
     return filtered;

@@ -32,6 +32,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
     return colors[type as keyof typeof colors] || 'bg-gray-50 text-gray-700 border-gray-200';
   };
 
+  const getPhaseLabel = (phase: string) => {
+    const phases = {
+      carpinteria: 'Carpintería',
+      pintura: 'Pintura', 
+      montaje: 'Montaje',
+      completado: 'Completado'
+    };
+    return phases[phase as keyof typeof phases] || phase;
+  };
+
   return (
     <Card className={`border-0 rounded-2xl transition-all duration-200 ${
       order.status === 'completado' 
@@ -88,6 +98,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
             </p>
           </div>
         )}
+
+        {/* Phase Label */}
+        <div className="mb-3">
+          <p className="text-xs text-gray-500 font-medium">
+            Fase actual: {getPhaseLabel(order.phase)}
+          </p>
+        </div>
 
         <div className="flex items-center justify-between">
           <Badge className={`${
