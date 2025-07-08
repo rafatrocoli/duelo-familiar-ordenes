@@ -281,16 +281,18 @@ const OrderManager: React.FC = () => {
 
         {/* Edit Order Modal */}
         <Dialog open={!!editingOrder} onOpenChange={() => setEditingOrder(null)}>
-          <DialogContent className="max-w-md mx-auto">
-            <DialogHeader>
+          <DialogContent className="max-w-md mx-auto max-h-[90vh] overflow-hidden flex flex-col p-0">
+            <DialogHeader className="px-6 pt-6 pb-4 border-b border-gray-100 flex-shrink-0">
               <DialogTitle>Editar Pedido</DialogTitle>
             </DialogHeader>
-            {editingOrder && (
-              <OrderForm 
-                onAddOrder={handleUpdateOrder}
-                initialData={editingOrder}
-              />
-            )}
+            <div className="overflow-y-auto flex-1 px-6 pb-6">
+              {editingOrder && (
+                <OrderForm 
+                  onAddOrder={handleUpdateOrder}
+                  initialData={editingOrder}
+                />
+              )}
+            </div>
           </DialogContent>
         </Dialog>
 
