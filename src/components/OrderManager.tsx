@@ -248,10 +248,12 @@ const OrderManager: React.FC = () => {
 
 
         {/* Bottom Navigation */}
-        <BottomNavigation 
-          activeDepartment={activeDepartment}
-          onDepartmentChange={handleDepartmentChange}
-        />
+        {activeDepartment !== 'nuevo' && (
+          <BottomNavigation 
+            activeDepartment={activeDepartment}
+            onDepartmentChange={handleDepartmentChange}
+          />
+        )}
       </div>
     </div>
   );
