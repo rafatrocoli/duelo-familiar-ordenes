@@ -11,9 +11,10 @@ import { Check, Clock, AlertCircle } from 'lucide-react';
 interface OrderCardProps {
   order: Order;
   onToggleStatus: (id: string) => void;
+  activeDepartment?: string;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment }) => {
   const getTypeLabel = (type: string) => {
     const types = {
       clasico: 'Clásico',
@@ -40,6 +41,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
       completado: 'Completado'
     };
     return phases[phase as keyof typeof phases] || phase;
+  };
+
+  const shouldShowCompleteButton = () => {
+    // Don't show in "Pedidos" tab
+    if (activeDepartment === 'pedidos') return false;
+    
+    // Only show if current department matches order phase
+    return activeDepartment === order.phase;
   };
 
   return (
@@ -109,27 +118,29 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
             {order.status === 'completado' ? 'Completado' : 'Pendiente'}
           </Badge>
           
-          <Button
-            onClick={() => onToggleStatus(order.id)}
-            size="sm"
-            className={`rounded-full px-4 ${
-              order.status === 'completado' 
-                ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
-                : 'bg-black text-white hover:bg-gray-800'
-            }`}
-          >
-            {order.status === 'completado' ? (
-              <>
-                <Clock className="w-4 h-4 mr-1" />
-                Reabrir
-              </>
-            ) : (
-              <>
-                <Check className="w-4 h-4 mr-1" />
-                Completar
-              </>
-            )}
-          </Button>
+          {shouldShowCompleteButton() && (
+            <Button
+              onClick={() => onToggleStatus(order.id)}
+              size="sm"
+              className={`rounded-full px-4 ${
+                order.status === 'completado' 
+                  ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
+            >
+              {order.status === 'completado' ? (
+                <>
+                  <Clock className="w-4 h-4 mr-1" />
+                  Reabrir
+                </>
+              ) : (
+                <>
+                  <Check className="w-4 h-4 mr-1" />
+                  Completar
+                </>
+              )}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

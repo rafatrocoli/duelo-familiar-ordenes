@@ -241,6 +241,7 @@ const OrderManager: React.FC = () => {
                 key={order.id}
                 order={order}
                 onToggleStatus={toggleOrderStatus}
+                activeDepartment={activeDepartment}
               />
             ))
           )}
