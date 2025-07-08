@@ -114,7 +114,7 @@ const OrderManager: React.FC = () => {
 
   const getDepartmentTitle = (department: Department) => {
     const titles = {
-      pedidos: 'Todos los Pedidos',
+      pedidos: 'Pedidos',
       montaje: 'Montaje',
       carpinteria: 'Carpintería',
       pintura: 'Pintura',
