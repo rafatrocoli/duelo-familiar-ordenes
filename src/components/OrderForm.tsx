@@ -130,7 +130,6 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
             min="1"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value === '' ? '' : parseInt(e.target.value))}
-            placeholder="ej: 50"
             className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
             required
           />
