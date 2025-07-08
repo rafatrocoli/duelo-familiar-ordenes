@@ -85,8 +85,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
                 URGENTE
               </Badge>
             )}
-            <Badge className={`${getTypeColor(order.coffeeType)} text-xs px-2 py-1 rounded-full border`}>
-              {getTypeLabel(order.coffeeType)}
+            <Badge className="bg-black text-white text-xs px-3 py-1 rounded-full">
+              {getPhaseLabel(order.phase)}
             </Badge>
           </div>
         </div>
@@ -99,12 +99,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus }) => {
           </div>
         )}
 
-        {/* Phase Label */}
-        <div className="mb-3">
-          <p className="text-xs text-gray-500 font-medium">
-            Fase actual: {getPhaseLabel(order.phase)}
-          </p>
-        </div>
 
         <div className="flex items-center justify-between">
           <Badge className={`${
