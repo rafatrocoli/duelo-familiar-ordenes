@@ -114,14 +114,31 @@ const OrderManager: React.FC = () => {
   };
 
   const filteredOrders = (() => {
-    let filtered = filter === 'todos' ? orders : orders.filter(order => order.status === filter);
+    let filtered = orders;
     
-    // Filter by department phase
+    // Filter by department phase first
     if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
       filtered = filtered.filter(order => 
         order.phase === activeDepartment || // Current phase orders
         order.completedPhases.includes(activeDepartment as any) // Orders that completed this phase
       );
+      
+      // Then apply status filter within the department
+      if (filter === 'pendiente') {
+        // Show orders that are currently in this phase and not completed
+        filtered = filtered.filter(order => 
+          order.phase === activeDepartment && order.status === 'pendiente'
+        );
+      } else if (filter === 'completado') {
+        // Show orders that have completed this phase
+        filtered = filtered.filter(order => 
+          order.completedPhases.includes(activeDepartment as any)
+        );
+      }
+      // 'todos' shows all (no additional filtering needed)
+    } else {
+      // For 'pedidos' tab, use the original logic
+      filtered = filter === 'todos' ? orders : orders.filter(order => order.status === filter);
     }
     
     return filtered;
@@ -271,84 +288,25 @@ const OrderManager: React.FC = () => {
               );
             }
 
-            // For department tabs (not 'pedidos'), group orders by current vs completed in this phase
-            if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
-              const currentPhaseOrders = sortedOrders.filter(order => 
-                order.phase === activeDepartment && order.status === 'pendiente'
-              );
-              const completedPhaseOrders = sortedOrders.filter(order => 
-                order.completedPhases.includes(activeDepartment as any) && order.phase !== activeDepartment
-              );
-
+            // Show all orders as a simple list, regardless of department
+            return sortedOrders.map(order => {
+              // Determine if order is completed in the current phase
+              const isCompletedInPhase = activeDepartment !== 'pedidos' && 
+                activeDepartment !== 'nuevo' && 
+                order.completedPhases.includes(activeDepartment as any);
+              
               return (
-                <>
-                  {/* Current Phase Orders */}
-                  {currentPhaseOrders.length > 0 && (
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-gray-700 px-2 flex items-center gap-2">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                        Pendientes en {getDepartmentTitle(activeDepartment)}
-                      </h3>
-                      {currentPhaseOrders.map(order => (
-                        <OrderCard
-                          key={order.id}
-                          order={order}
-                          onToggleStatus={toggleOrderStatus}
-                          activeDepartment={activeDepartment}
-                          onEditOrder={handleEditOrder}
-                          onDeleteOrder={handleDeleteOrder}
-                          isCompletedInPhase={false}
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Completed Phase Orders */}
-                  {completedPhaseOrders.length > 0 && (
-                    <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-green-600 px-2 flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        Completados en {getDepartmentTitle(activeDepartment)}
-                      </h3>
-                      {completedPhaseOrders.map(order => (
-                        <OrderCard
-                          key={order.id}
-                          order={order}
-                          onToggleStatus={toggleOrderStatus}
-                          activeDepartment={activeDepartment}
-                          onEditOrder={handleEditOrder}
-                          onDeleteOrder={handleDeleteOrder}
-                          isCompletedInPhase={true}
-                        />
-                      ))}
-                    </div>
-                  )}
-
-                  {/* No orders message */}
-                  {currentPhaseOrders.length === 0 && completedPhaseOrders.length === 0 && (
-                    <div className="text-center py-12">
-                      <div className="text-gray-400 text-lg mb-2">📋</div>
-                      <p className="text-gray-500 text-base">
-                        No hay pedidos en {getDepartmentTitle(activeDepartment)}
-                      </p>
-                    </div>
-                  )}
-                </>
+                <OrderCard
+                  key={order.id}
+                  order={order}
+                  onToggleStatus={toggleOrderStatus}
+                  activeDepartment={activeDepartment}
+                  onEditOrder={handleEditOrder}
+                  onDeleteOrder={handleDeleteOrder}
+                  isCompletedInPhase={isCompletedInPhase}
+                />
               );
-            }
-
-            // For 'pedidos' tab, show all orders normally
-            return sortedOrders.map(order => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                onToggleStatus={toggleOrderStatus}
-                activeDepartment={activeDepartment}
-                onEditOrder={handleEditOrder}
-                onDeleteOrder={handleDeleteOrder}
-                isCompletedInPhase={false}
-              />
-            ));
+            });
           })()}
         </div>
 
