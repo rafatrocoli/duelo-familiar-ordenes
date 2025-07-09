@@ -468,7 +468,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
               onClick={handleConfirmChanges}
               className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium border-0"
             >
-              Continuar
+              Aceptar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
