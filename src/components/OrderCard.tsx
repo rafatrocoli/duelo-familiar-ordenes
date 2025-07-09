@@ -106,9 +106,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                 URGENTE
               </Badge>
             )}
-            <Badge className="bg-black text-white text-xs px-3 py-1 rounded-full">
-              {getPhaseLabel(order.phase)}
-            </Badge>
+            {activeDepartment === 'pedidos' && (
+              <Badge className="bg-black text-white text-xs px-3 py-1 rounded-full">
+                {getPhaseLabel(order.phase)}
+              </Badge>
+            )}
           </div>
         </div>
 
