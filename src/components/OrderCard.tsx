@@ -37,9 +37,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
 
   const getPhaseLabel = (phase: string) => {
     const phases = {
+      montaje: 'Montaje',
       carpinteria: 'Carpintería',
       pintura: 'Pintura', 
-      montaje: 'Montaje',
       completado: 'Completado'
     };
     return phases[phase as keyof typeof phases] || phase;

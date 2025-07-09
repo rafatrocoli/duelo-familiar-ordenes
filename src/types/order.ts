@@ -1,7 +1,7 @@
 
 export type OrderType = 'clasico' | 'ecologico' | 'premium';
 export type OrderStatus = 'pendiente' | 'completado';
-export type OrderPhase = 'carpinteria' | 'pintura' | 'montaje' | 'completado';
+export type OrderPhase = 'montaje' | 'carpinteria' | 'pintura' | 'completado';
 
 export interface Product {
   model: string;

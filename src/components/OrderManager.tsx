@@ -39,7 +39,7 @@ const OrderManager: React.FC = () => {
       id: Date.now().toString(),
       orderDate: new Date(),
       status: 'pendiente',
-      phase: 'carpinteria'
+      phase: 'montaje'
     };
 
     setOrders(prev => [newOrder, ...prev]);
@@ -54,7 +54,7 @@ const OrderManager: React.FC = () => {
           return { ...order, status: 'pendiente' };
         } else {
           // Complete current phase and move to next
-          const phaseOrder = ['carpinteria', 'pintura', 'montaje'] as const;
+          const phaseOrder = ['montaje', 'carpinteria', 'pintura'] as const;
           const currentPhaseIndex = phaseOrder.indexOf(order.phase as any);
           
           if (currentPhaseIndex < phaseOrder.length - 1) {

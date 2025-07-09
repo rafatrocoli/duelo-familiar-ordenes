@@ -25,10 +25,10 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             <Clipboard className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
-            value="carpinteria"
+            value="montaje" 
             className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
           >
-            <Hammer className="w-6 h-6" />
+            <Settings className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="nuevo"
@@ -37,16 +37,16 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             <Plus className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
+            value="carpinteria"
+            className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
+          >
+            <Hammer className="w-6 h-6" />
+          </TabsTrigger>
+          <TabsTrigger 
             value="pintura"
             className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
           >
             <Palette className="w-6 h-6" />
-          </TabsTrigger>
-          <TabsTrigger 
-            value="montaje" 
-            className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
-          >
-            <Settings className="w-6 h-6" />
           </TabsTrigger>
         </TabsList>
       </Tabs>
