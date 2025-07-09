@@ -11,7 +11,7 @@ import { Plus, X } from 'lucide-react';
 import { Order, OrderType, Product, OrderPhase, OrderStatus } from '@/types/order';
 
 interface OrderFormProps {
-  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'completedPhases'>) => void;
+  onAddOrder: (order: Omit<Order, 'id' | 'orderDate'>) => void;
   initialData?: Order;
   nextOrderNumber: number;
 }
@@ -124,6 +124,25 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       return;
     }
 
+    // Calculate new completedPhases when phase is manually changed
+    let newCompletedPhases: OrderPhase[] = [];
+    if (initialData) {
+      if (currentPhase === initialData.phase) {
+        // Phase didn't change, keep existing completedPhases
+        newCompletedPhases = initialData.completedPhases || [];
+      } else {
+        // Phase changed manually, update completedPhases accordingly
+        const phaseOrder: OrderPhase[] = ['montaje', 'carpinteria', 'pintura'];
+        const newPhaseIndex = phaseOrder.indexOf(currentPhase as OrderPhase);
+        
+        // Only keep completed phases that are before the new current phase
+        newCompletedPhases = (initialData.completedPhases || []).filter(phase => {
+          const completedPhaseIndex = phaseOrder.indexOf(phase);
+          return completedPhaseIndex < newPhaseIndex;
+        });
+      }
+    }
+
     onAddOrder({
       orderNumber,
       customerName: customerName.trim(),
@@ -137,6 +156,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       isUrgent,
       phase: initialData ? currentPhase : 'montaje',
       status: initialData && currentPhase !== initialData.phase ? 'pendiente' : (initialData?.status || 'pendiente'),
+      completedPhases: newCompletedPhases,
     });
 
     // Reset form only if not editing

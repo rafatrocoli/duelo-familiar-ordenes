@@ -37,14 +37,15 @@ const OrderManager: React.FC = () => {
     localStorage.setItem('coffin-orders', JSON.stringify(orders));
   }, [orders]);
 
-  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => {
+  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate'>) => {
     const newOrder: Order = {
       ...orderData,
       id: Date.now().toString(),
       orderDate: new Date(),
-      status: 'pendiente',
-      phase: 'montaje',
-      completedPhases: []
+      // For new orders, set defaults if not provided
+      status: orderData.status || 'pendiente',
+      phase: orderData.phase || 'montaje',
+      completedPhases: orderData.completedPhases || []
     };
 
     setOrders(prev => [newOrder, ...prev]);
@@ -173,7 +174,7 @@ const OrderManager: React.FC = () => {
     setEditingOrder(order);
   };
 
-  const handleUpdateOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => {
+  const handleUpdateOrder = (orderData: Omit<Order, 'id' | 'orderDate'>) => {
     if (editingOrder) {
       setOrders(prev => prev.map(order => 
         order.id === editingOrder.id 
