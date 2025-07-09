@@ -160,13 +160,12 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             
             {/* Complete button - only in department tabs */}
             {shouldShowCompleteButton() && (
-              <Button
+              <button
                 onClick={() => onToggleStatus(order.id)}
-                size="sm"
-                className={`rounded-full px-3 py-1 text-xs ${
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
                   order.status === 'completado' 
-                    ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
-                    : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
+                    ? 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200' 
+                    : 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
                 }`}
               >
                 {order.status === 'completado' ? (
@@ -180,7 +179,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                     Completar
                   </>
                 )}
-              </Button>
+              </button>
             )}
           </div>
         </div>
