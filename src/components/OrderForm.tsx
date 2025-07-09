@@ -8,10 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Plus, X } from 'lucide-react';
-import { Order, OrderType, Product } from '@/types/order';
+import { Order, OrderType, Product, OrderPhase } from '@/types/order';
 
 interface OrderFormProps {
-  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => void;
+  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'completedPhases'>) => void;
   initialData?: Order;
   nextOrderNumber: number;
 }
@@ -31,6 +31,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
   const [destination, setDestination] = useState('');
   const [products, setProducts] = useState<Product[]>([createEmptyProduct()]);
   const [isUrgent, setIsUrgent] = useState(false);
+  const [currentPhase, setCurrentPhase] = useState<OrderPhase>('montaje');
   const [errors, setErrors] = useState<{
     customerName: boolean;
     destination: boolean;
@@ -49,6 +50,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       setDestination(initialData.destination);
       setProducts(initialData.products.length > 0 ? initialData.products : [createEmptyProduct()]);
       setIsUrgent(initialData.isUrgent);
+      setCurrentPhase(initialData.phase);
       // Reset errors when editing
       setErrors({
         customerName: false,
@@ -133,6 +135,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
         comments: product.comments.trim()
       })),
       isUrgent,
+      phase: initialData ? currentPhase : 'montaje',
     });
 
     // Reset form only if not editing
@@ -224,6 +227,28 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
             Marcar como pedido urgente
           </Label>
         </div>
+
+        {/* Current Phase - Only shown when editing */}
+        {initialData && (
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-gray-700">
+              Fase actual
+            </Label>
+            <Select 
+              value={currentPhase} 
+              onValueChange={(value: OrderPhase) => setCurrentPhase(value)}
+            >
+              <SelectTrigger className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent">
+                <SelectValue placeholder="Seleccionar fase" />
+              </SelectTrigger>
+              <SelectContent className="rounded-xl border-gray-200">
+                <SelectItem value="montaje" className="rounded-lg">Montaje</SelectItem>
+                <SelectItem value="carpinteria" className="rounded-lg">Carpintería</SelectItem>
+                <SelectItem value="pintura" className="rounded-lg">Pintura</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
 
       <Separator className="my-6" />
