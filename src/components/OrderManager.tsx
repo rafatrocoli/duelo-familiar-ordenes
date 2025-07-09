@@ -20,9 +20,11 @@ const OrderManager: React.FC = () => {
   useEffect(() => {
     const savedOrders = localStorage.getItem('coffin-orders');
     if (savedOrders) {
-      const parsedOrders = JSON.parse(savedOrders).map((order: any) => ({
+      const parsedOrders = JSON.parse(savedOrders).map((order: any, index: number) => ({
         ...order,
-        orderDate: new Date(order.orderDate)
+        orderDate: new Date(order.orderDate),
+        // Add orderNumber to existing orders if they don't have one
+        orderNumber: order.orderNumber || (index + 1)
       }));
       setOrders(parsedOrders);
     }
@@ -44,6 +46,12 @@ const OrderManager: React.FC = () => {
 
     setOrders(prev => [newOrder, ...prev]);
     setShowForm(false);
+  };
+
+  const getNextOrderNumber = () => {
+    if (orders.length === 0) return 1;
+    const maxOrderNumber = Math.max(...orders.map(order => order.orderNumber));
+    return maxOrderNumber + 1;
   };
 
   const toggleOrderStatus = (id: string) => {
@@ -227,7 +235,7 @@ const OrderManager: React.FC = () => {
                     Cancelar
                   </Button>
                 </div>
-                <OrderForm onAddOrder={addOrder} />
+                <OrderForm onAddOrder={addOrder} nextOrderNumber={getNextOrderNumber()} />
               </div>
             </div>
           </div>
@@ -271,6 +279,7 @@ const OrderManager: React.FC = () => {
                 <OrderForm 
                   onAddOrder={handleUpdateOrder}
                   initialData={editingOrder}
+                  nextOrderNumber={getNextOrderNumber()}
                 />
               )}
             </div>

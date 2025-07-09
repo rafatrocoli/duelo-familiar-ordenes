@@ -13,6 +13,7 @@ import { Order, OrderType, Product } from '@/types/order';
 interface OrderFormProps {
   onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => void;
   initialData?: Order;
+  nextOrderNumber: number;
 }
 
 const createEmptyProduct = (): Product => ({
@@ -24,7 +25,8 @@ const createEmptyProduct = (): Product => ({
   comments: ''
 });
 
-const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
+const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrderNumber }) => {
+  const [orderNumber, setOrderNumber] = useState(nextOrderNumber);
   const [customerName, setCustomerName] = useState('');
   const [destination, setDestination] = useState('');
   const [products, setProducts] = useState<Product[]>([createEmptyProduct()]);
@@ -33,12 +35,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
   // Populate form with initialData if provided (for editing)
   useEffect(() => {
     if (initialData) {
+      setOrderNumber(initialData.orderNumber);
       setCustomerName(initialData.customerName);
       setDestination(initialData.destination);
       setProducts(initialData.products.length > 0 ? initialData.products : [createEmptyProduct()]);
       setIsUrgent(initialData.isUrgent);
+    } else {
+      setOrderNumber(nextOrderNumber);
     }
-  }, [initialData]);
+  }, [initialData, nextOrderNumber]);
 
   const addProduct = () => {
     setProducts([...products, createEmptyProduct()]);
@@ -74,6 +79,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
     }
 
     onAddOrder({
+      orderNumber,
       customerName: customerName.trim(),
       destination: destination.trim(),
       products: validProducts.map(product => ({
@@ -87,6 +93,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
 
     // Reset form only if not editing
     if (!initialData) {
+      setOrderNumber(nextOrderNumber);
       setCustomerName('');
       setDestination('');
       setProducts([createEmptyProduct()]);
@@ -98,6 +105,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData }) => {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Customer and Destination Info */}
       <div className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="orderNumber" className="text-sm font-medium text-gray-700">
+            Número de Pedido
+          </Label>
+          <Input
+            id="orderNumber"
+            type="number"
+            value={orderNumber}
+            className="rounded-xl border-gray-200 h-12 px-4 bg-gray-50 text-gray-600"
+            readOnly
+          />
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="customerName" className="text-sm font-medium text-gray-700">
             Cliente *

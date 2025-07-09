@@ -14,6 +14,7 @@ export interface Product {
 
 export interface Order {
   id: string;
+  orderNumber: number;
   customerName: string;
   destination: string;
   products: Product[];
