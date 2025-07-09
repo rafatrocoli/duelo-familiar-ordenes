@@ -1,12 +1,19 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { 
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Order } from '@/types/order';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Check, Clock, AlertCircle, Pencil, Trash2 } from 'lucide-react';
+import { Check, Clock, AlertCircle, Pencil, Trash2, X } from 'lucide-react';
 
 interface OrderCardProps {
   order: Order;
@@ -18,6 +25,7 @@ interface OrderCardProps {
 }
 
 const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment, onEditOrder, onDeleteOrder, isCompletedInPhase = false }) => {
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const getTypeLabel = (type: string) => {
     const types = {
       clasico: 'Clásico',
@@ -52,6 +60,21 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
     
     // Only show if current department matches order phase
     return activeDepartment === order.phase;
+  };
+
+  const handleCompleteClick = () => {
+    // If reopening (already completed), no confirmation needed
+    if (order.status === 'completado') {
+      onToggleStatus(order.id);
+    } else {
+      // Show confirmation modal for completing
+      setShowConfirmModal(true);
+    }
+  };
+
+  const handleConfirmComplete = () => {
+    onToggleStatus(order.id);
+    setShowConfirmModal(false);
   };
 
   return (
@@ -161,7 +184,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             {/* Complete button - only in department tabs */}
             {shouldShowCompleteButton() && (
               <button
-                onClick={() => onToggleStatus(order.id)}
+                onClick={handleCompleteClick}
                 className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${
                   order.status === 'completado' 
                     ? 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-200' 
@@ -184,6 +207,50 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           </div>
         </div>
       </CardContent>
+
+      {/* Confirmation Modal */}
+      <AlertDialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <AlertDialogContent className="sm:max-w-md">
+          <button 
+            onClick={() => setShowConfirmModal(false)}
+            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          >
+            <X className="h-4 w-4 text-gray-400" />
+            <span className="sr-only">Close</span>
+          </button>
+          
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg font-semibold text-center">
+              Confirm completion?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-sm text-muted-foreground text-center mt-2">
+              This order will be marked as completed and moved to the next phase. Are you sure you want to continue?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          
+          <div className="flex justify-center gap-8 mt-6 mb-2">
+            <button
+              onClick={() => setShowConfirmModal(false)}
+              className="flex flex-col items-center gap-2 group"
+            >
+              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                <span className="text-red-600 text-lg">❌</span>
+              </div>
+              <span className="text-xs text-gray-600 font-medium">Cancel</span>
+            </button>
+            
+            <button
+              onClick={handleConfirmComplete}
+              className="flex flex-col items-center gap-2 group"
+            >
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <span className="text-green-600 text-lg">✅</span>
+              </div>
+              <span className="text-xs text-gray-600 font-medium">Yes, complete</span>
+            </button>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };
