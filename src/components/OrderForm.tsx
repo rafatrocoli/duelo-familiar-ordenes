@@ -8,10 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Plus, X } from 'lucide-react';
-import { Order, OrderType, Product, OrderPhase } from '@/types/order';
+import { Order, OrderType, Product, OrderPhase, OrderStatus } from '@/types/order';
 
 interface OrderFormProps {
-  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'completedPhases'>) => void;
+  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'completedPhases'>) => void;
   initialData?: Order;
   nextOrderNumber: number;
 }
@@ -136,6 +136,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       })),
       isUrgent,
       phase: initialData ? currentPhase : 'montaje',
+      status: initialData && currentPhase !== initialData.phase ? 'pendiente' : (initialData?.status || 'pendiente'),
     });
 
     // Reset form only if not editing
