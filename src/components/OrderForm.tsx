@@ -463,18 +463,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
               Has realizado cambios en este pedido. ¿Estás seguro de que deseas continuar?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="justify-center gap-8">
-            <AlertDialogCancel 
-              onClick={handleCancelChanges}
-              className="w-12 h-12 rounded-full flex items-center justify-center border-0 bg-transparent hover:bg-gray-100 p-0"
-            >
-              <span className="text-red-500 text-2xl">❌</span>
-            </AlertDialogCancel>
+          <AlertDialogFooter className="justify-center">
             <AlertDialogAction 
               onClick={handleConfirmChanges}
-              className="w-12 h-12 rounded-full flex items-center justify-center border-0 bg-transparent hover:bg-gray-100 p-0"
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium border-0"
             >
-              <span className="text-green-500 text-2xl">✅</span>
+              Continuar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
