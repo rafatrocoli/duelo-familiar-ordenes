@@ -466,17 +466,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
           <AlertDialogFooter>
             <AlertDialogCancel 
               onClick={handleCancelChanges}
-              className="flex items-center gap-2 bg-red-100 text-red-700 border-red-300 hover:bg-red-200"
+              className="w-12 h-12 rounded-full flex items-center justify-center border-0 bg-transparent hover:bg-gray-100 p-0"
             >
-              <span className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">❌</span>
-              Cancelar
+              <span className="text-red-500 text-2xl">❌</span>
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleConfirmChanges}
-              className="flex items-center gap-2 bg-green-100 text-green-700 border-green-300 hover:bg-green-200"
+              className="w-12 h-12 rounded-full flex items-center justify-center border-0 bg-transparent hover:bg-gray-100 p-0"
             >
-              <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✅</span>
-              Confirmar
+              <span className="text-green-500 text-2xl">✅</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

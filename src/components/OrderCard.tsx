@@ -234,16 +234,16 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           <div className="flex justify-center gap-8 mt-6 mb-2">
             <button
               onClick={() => setShowConfirmModal(false)}
-              className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
+              className="w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
             >
-              <span className="text-red-600 text-lg">❌</span>
+              <span className="text-red-500 text-2xl">❌</span>
             </button>
             
             <button
               onClick={handleConfirmComplete}
-              className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors"
+              className="w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors"
             >
-              <span className="text-green-600 text-lg">✅</span>
+              <span className="text-green-500 text-2xl">✅</span>
             </button>
           </div>
         </AlertDialogContent>
