@@ -163,10 +163,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               <Button
                 onClick={() => onToggleStatus(order.id)}
                 size="sm"
-                className={`rounded-full px-4 ${
+                className={`rounded-full px-3 py-1 text-xs ${
                   order.status === 'completado' 
                     ? 'bg-gray-100 text-gray-600 hover:bg-gray-200' 
-                    : 'bg-black text-white hover:bg-gray-800'
+                    : 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
                 }`}
               >
                 {order.status === 'completado' ? (
