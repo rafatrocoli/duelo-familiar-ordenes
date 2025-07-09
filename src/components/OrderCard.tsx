@@ -101,12 +101,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           </div>
           
           <div className="flex flex-col items-end gap-2">
-            {isCompletedInPhase && (
-              <Badge className="bg-green-100 text-green-700 border-green-200 text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                <Check className="w-3 h-3" />
-                COMPLETADO
-              </Badge>
-            )}
             {order.isUrgent && order.status === 'pendiente' && !isCompletedInPhase && (
               <Badge className="bg-red-100 text-red-700 border-red-200 text-xs px-2 py-1 rounded-full">
                 URGENTE
@@ -134,11 +128,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
 
         <div className="flex items-center justify-between">
           <Badge className={`${
-            order.status === 'completado' 
+            (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo' && isCompletedInPhase) || 
+            (activeDepartment === 'pedidos' && order.status === 'completado')
               ? 'bg-green-50 text-green-700 border-green-200' 
               : 'bg-yellow-50 text-yellow-700 border-yellow-200'
           } border rounded-full px-3 py-1`}>
-            {order.status === 'completado' ? 'Completado' : 'Pendiente'}
+            {(activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo' && isCompletedInPhase) || 
+             (activeDepartment === 'pedidos' && order.status === 'completado') ? 'Completado' : 'Pendiente'}
           </Badge>
           
           <div className="flex items-center gap-2">
