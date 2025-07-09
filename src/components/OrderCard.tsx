@@ -221,32 +221,26 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           
           <AlertDialogHeader>
             <AlertDialogTitle className="text-lg font-semibold text-center">
-              Confirm completion?
+              ¿Confirmar finalización?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-sm text-muted-foreground text-center mt-2">
-              This order will be marked as completed and moved to the next phase. Are you sure you want to continue?
+              Este pedido se marcará como completado y pasará a la siguiente fase. ¿Estás seguro de que deseas continuar?
             </AlertDialogDescription>
           </AlertDialogHeader>
           
           <div className="flex justify-center gap-8 mt-6 mb-2">
             <button
               onClick={() => setShowConfirmModal(false)}
-              className="flex flex-col items-center gap-2 group"
+              className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
             >
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                <span className="text-red-600 text-lg">❌</span>
-              </div>
-              <span className="text-xs text-gray-600 font-medium">Cancel</span>
+              <span className="text-red-600 text-lg">❌</span>
             </button>
             
             <button
               onClick={handleConfirmComplete}
-              className="flex flex-col items-center gap-2 group"
+              className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors"
             >
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                <span className="text-green-600 text-lg">✅</span>
-              </div>
-              <span className="text-xs text-gray-600 font-medium">Yes, complete</span>
+              <span className="text-green-600 text-lg">✅</span>
             </button>
           </div>
         </AlertDialogContent>
