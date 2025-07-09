@@ -22,4 +22,5 @@ export interface Order {
   isUrgent: boolean;
   status: OrderStatus;
   phase: OrderPhase;
+  completedPhases: OrderPhase[];
 }

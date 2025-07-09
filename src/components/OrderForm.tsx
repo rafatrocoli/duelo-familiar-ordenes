@@ -11,7 +11,7 @@ import { Plus, X } from 'lucide-react';
 import { Order, OrderType, Product } from '@/types/order';
 
 interface OrderFormProps {
-  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => void;
+  onAddOrder: (order: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => void;
   initialData?: Order;
   nextOrderNumber: number;
 }

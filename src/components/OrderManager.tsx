@@ -24,7 +24,9 @@ const OrderManager: React.FC = () => {
         ...order,
         orderDate: new Date(order.orderDate),
         // Add orderNumber to existing orders if they don't have one
-        orderNumber: order.orderNumber || (index + 1)
+        orderNumber: order.orderNumber || (index + 1),
+        // Add completedPhases to existing orders if they don't have it
+        completedPhases: order.completedPhases || []
       }));
       setOrders(parsedOrders);
     }
@@ -35,13 +37,14 @@ const OrderManager: React.FC = () => {
     localStorage.setItem('coffin-orders', JSON.stringify(orders));
   }, [orders]);
 
-  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => {
+  const addOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => {
     const newOrder: Order = {
       ...orderData,
       id: Date.now().toString(),
       orderDate: new Date(),
       status: 'pendiente',
-      phase: 'montaje'
+      phase: 'montaje',
+      completedPhases: []
     };
 
     setOrders(prev => [newOrder, ...prev]);
@@ -65,19 +68,26 @@ const OrderManager: React.FC = () => {
           const phaseOrder = ['montaje', 'carpinteria', 'pintura'] as const;
           const currentPhaseIndex = phaseOrder.indexOf(order.phase as any);
           
+          // Add current phase to completed phases if not already there
+          const updatedCompletedPhases = order.completedPhases.includes(order.phase as any) 
+            ? order.completedPhases 
+            : [...order.completedPhases, order.phase as any];
+          
           if (currentPhaseIndex < phaseOrder.length - 1) {
             // Move to next phase
             return { 
               ...order, 
               phase: phaseOrder[currentPhaseIndex + 1],
-              status: 'pendiente'
+              status: 'pendiente',
+              completedPhases: updatedCompletedPhases
             };
           } else {
             // Complete final phase
             return { 
               ...order, 
               status: 'completado',
-              phase: 'completado'
+              phase: 'completado',
+              completedPhases: updatedCompletedPhases
             };
           }
         }
@@ -108,7 +118,10 @@ const OrderManager: React.FC = () => {
     
     // Filter by department phase
     if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
-      filtered = filtered.filter(order => order.phase === activeDepartment);
+      filtered = filtered.filter(order => 
+        order.phase === activeDepartment || // Current phase orders
+        order.completedPhases.includes(activeDepartment as any) // Orders that completed this phase
+      );
     }
     
     return filtered;
@@ -143,7 +156,7 @@ const OrderManager: React.FC = () => {
     setEditingOrder(order);
   };
 
-  const handleUpdateOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase'>) => {
+  const handleUpdateOrder = (orderData: Omit<Order, 'id' | 'orderDate' | 'status' | 'phase' | 'completedPhases'>) => {
     if (editingOrder) {
       setOrders(prev => prev.map(order => 
         order.id === editingOrder.id 
@@ -242,19 +255,86 @@ const OrderManager: React.FC = () => {
         )}
 
         {/* Orders List */}
-        <div className="px-6 py-4 space-y-3 pb-20">
-          {sortedOrders.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-400 text-lg mb-2">📋</div>
-              <p className="text-gray-500 text-base">
-                {filter === 'todos' 
-                  ? 'No hay pedidos registrados'
-                  : `No hay pedidos ${filter === 'pendiente' ? 'pendientes' : 'completados'}`
-                }
-              </p>
-            </div>
-          ) : (
-            sortedOrders.map(order => (
+        <div className="px-6 py-4 space-y-4 pb-20">
+          {(() => {
+            if (sortedOrders.length === 0) {
+              return (
+                <div className="text-center py-12">
+                  <div className="text-gray-400 text-lg mb-2">📋</div>
+                  <p className="text-gray-500 text-base">
+                    {filter === 'todos' 
+                      ? 'No hay pedidos registrados'
+                      : `No hay pedidos ${filter === 'pendiente' ? 'pendientes' : 'completados'}`
+                    }
+                  </p>
+                </div>
+              );
+            }
+
+            // For department tabs (not 'pedidos'), group orders by current vs completed in this phase
+            if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
+              const currentPhaseOrders = sortedOrders.filter(order => 
+                order.phase === activeDepartment && order.status === 'pendiente'
+              );
+              const completedPhaseOrders = sortedOrders.filter(order => 
+                order.completedPhases.includes(activeDepartment as any) && order.phase !== activeDepartment
+              );
+
+              return (
+                <>
+                  {/* Current Phase Orders */}
+                  {currentPhaseOrders.length > 0 && (
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold text-gray-700 px-2">
+                        En {getDepartmentTitle(activeDepartment)}
+                      </h3>
+                      {currentPhaseOrders.map(order => (
+                        <OrderCard
+                          key={order.id}
+                          order={order}
+                          onToggleStatus={toggleOrderStatus}
+                          activeDepartment={activeDepartment}
+                          onEditOrder={handleEditOrder}
+                          onDeleteOrder={handleDeleteOrder}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Completed Phase Orders */}
+                  {completedPhaseOrders.length > 0 && (
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold text-gray-500 px-2">
+                        Completados en {getDepartmentTitle(activeDepartment)}
+                      </h3>
+                      {completedPhaseOrders.map(order => (
+                        <OrderCard
+                          key={order.id}
+                          order={order}
+                          onToggleStatus={toggleOrderStatus}
+                          activeDepartment={activeDepartment}
+                          onEditOrder={handleEditOrder}
+                          onDeleteOrder={handleDeleteOrder}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* No orders message */}
+                  {currentPhaseOrders.length === 0 && completedPhaseOrders.length === 0 && (
+                    <div className="text-center py-12">
+                      <div className="text-gray-400 text-lg mb-2">📋</div>
+                      <p className="text-gray-500 text-base">
+                        No hay pedidos en {getDepartmentTitle(activeDepartment)}
+                      </p>
+                    </div>
+                  )}
+                </>
+              );
+            }
+
+            // For 'pedidos' tab, show all orders normally
+            return sortedOrders.map(order => (
               <OrderCard
                 key={order.id}
                 order={order}
@@ -263,8 +343,8 @@ const OrderManager: React.FC = () => {
                 onEditOrder={handleEditOrder}
                 onDeleteOrder={handleDeleteOrder}
               />
-            ))
-          )}
+            ));
+          })()}
         </div>
 
 
