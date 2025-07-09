@@ -31,6 +31,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
   const [destination, setDestination] = useState('');
   const [products, setProducts] = useState<Product[]>([createEmptyProduct()]);
   const [isUrgent, setIsUrgent] = useState(false);
+  const [errors, setErrors] = useState<{
+    customerName: boolean;
+    destination: boolean;
+    products: boolean[];
+  }>({
+    customerName: false,
+    destination: false,
+    products: [false]
+  });
 
   // Populate form with initialData if provided (for editing)
   useEffect(() => {
@@ -40,6 +49,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       setDestination(initialData.destination);
       setProducts(initialData.products.length > 0 ? initialData.products : [createEmptyProduct()]);
       setIsUrgent(initialData.isUrgent);
+      // Reset errors when editing
+      setErrors({
+        customerName: false,
+        destination: false,
+        products: initialData.products.map(() => false)
+      });
     } else {
       setOrderNumber(nextOrderNumber);
     }
@@ -47,11 +62,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
 
   const addProduct = () => {
     setProducts([...products, createEmptyProduct()]);
+    setErrors(prev => ({
+      ...prev,
+      products: [...prev.products, false]
+    }));
   };
 
   const removeProduct = (index: number) => {
     if (products.length > 1) {
       setProducts(products.filter((_, i) => i !== index));
+      setErrors(prev => ({
+        ...prev,
+        products: prev.products.filter((_, i) => i !== index)
+      }));
     }
   };
 
@@ -59,13 +82,34 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
     setProducts(products.map((product, i) => 
       i === index ? { ...product, [field]: value } : product
     ));
+    
+    // Clear error when user starts typing in model field
+    if (field === 'model' && value.trim()) {
+      setErrors(prev => ({
+        ...prev,
+        products: prev.products.map((error, i) => i === index ? false : error)
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
-    if (!customerName.trim() || !destination.trim()) {
+    const newErrors = {
+      customerName: !customerName.trim(),
+      destination: !destination.trim(),
+      products: products.map(product => !product.model.trim() || product.quantity <= 0)
+    };
+
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    const hasErrors = newErrors.customerName || 
+                      newErrors.destination || 
+                      newErrors.products.some(error => error);
+
+    if (hasErrors) {
       return;
     }
 
@@ -98,6 +142,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       setDestination('');
       setProducts([createEmptyProduct()]);
       setIsUrgent(false);
+      setErrors({
+        customerName: false,
+        destination: false,
+        products: [false]
+      });
     }
   };
 
@@ -119,33 +168,49 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="customerName" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="customerName" className={`text-sm font-medium ${errors.customerName ? 'text-red-600' : 'text-gray-700'}`}>
             Cliente *
           </Label>
           <Input
             id="customerName"
             type="text"
             value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
+            onChange={(e) => {
+              setCustomerName(e.target.value);
+              if (e.target.value.trim()) {
+                setErrors(prev => ({ ...prev, customerName: false }));
+              }
+            }}
             placeholder="Nombre del cliente"
-            className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
+            className={`rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent ${errors.customerName ? 'border-red-500' : ''}`}
             required
           />
+          {errors.customerName && (
+            <p className="text-red-600 text-xs mt-1">Campo obligatorio</p>
+          )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="destination" className="text-sm font-medium text-gray-700">
+          <Label htmlFor="destination" className={`text-sm font-medium ${errors.destination ? 'text-red-600' : 'text-gray-700'}`}>
             Destino *
           </Label>
           <Input
             id="destination"
             type="text"
             value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            onChange={(e) => {
+              setDestination(e.target.value);
+              if (e.target.value.trim()) {
+                setErrors(prev => ({ ...prev, destination: false }));
+              }
+            }}
             placeholder="Destino del pedido"
-            className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
+            className={`rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent ${errors.destination ? 'border-red-500' : ''}`}
             required
           />
+          {errors.destination && (
+            <p className="text-red-600 text-xs mt-1">Campo obligatorio</p>
+          )}
         </div>
 
         <div className="flex items-center space-x-3 p-4 bg-gray-50 rounded-xl">
@@ -198,7 +263,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-sm font-medium text-gray-700">
+                <Label className={`text-sm font-medium ${errors.products[index] ? 'text-red-600' : 'text-gray-700'}`}>
                   Modelo *
                 </Label>
                 <Input
@@ -206,9 +271,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
                   value={product.model}
                   onChange={(e) => updateProduct(index, 'model', e.target.value)}
                   placeholder="Modelo del ataúd"
-                  className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
+                  className={`rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent ${errors.products[index] ? 'border-red-500' : ''}`}
                   required
                 />
+                {errors.products[index] && (
+                  <p className="text-red-600 text-xs mt-1">Campo obligatorio</p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
