@@ -56,11 +56,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
 
   return (
     <Card className={`border-0 rounded-2xl transition-all duration-200 ${
-      isCompletedInPhase
-        ? 'bg-green-50 border border-green-200 opacity-90' 
-        : order.status === 'completado' 
-          ? 'bg-gray-50 opacity-80' 
-          : 'bg-white shadow-sm hover:shadow-md'
+      order.status === 'completado' 
+        ? 'bg-gray-50 opacity-80' 
+        : 'bg-white shadow-sm hover:shadow-md'
     } ${order.isUrgent && order.status === 'pendiente' ? 'ring-2 ring-red-100' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
