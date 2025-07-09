@@ -324,6 +324,7 @@ const OrderManager: React.FC = () => {
                   onAddOrder={handleUpdateOrder}
                   initialData={editingOrder}
                   nextOrderNumber={getNextOrderNumber()}
+                  isEditingFromTodos={activeDepartment === 'pedidos'}
                 />
               )}
             </div>

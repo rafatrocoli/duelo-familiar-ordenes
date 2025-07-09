@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Plus, X } from 'lucide-react';
 import { Order, OrderType, Product, OrderPhase, OrderStatus } from '@/types/order';
 
@@ -14,6 +15,7 @@ interface OrderFormProps {
   onAddOrder: (order: Omit<Order, 'id' | 'orderDate'>) => void;
   initialData?: Order;
   nextOrderNumber: number;
+  isEditingFromTodos?: boolean;
 }
 
 const createEmptyProduct = (): Product => ({
@@ -25,13 +27,15 @@ const createEmptyProduct = (): Product => ({
   comments: ''
 });
 
-const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrderNumber }) => {
+const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrderNumber, isEditingFromTodos }) => {
   const [orderNumber, setOrderNumber] = useState(nextOrderNumber);
   const [customerName, setCustomerName] = useState('');
   const [destination, setDestination] = useState('');
   const [products, setProducts] = useState<Product[]>([createEmptyProduct()]);
   const [isUrgent, setIsUrgent] = useState(false);
   const [currentPhase, setCurrentPhase] = useState<OrderPhase>('montaje');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingOrderData, setPendingOrderData] = useState<Omit<Order, 'id' | 'orderDate'> | null>(null);
   const [errors, setErrors] = useState<{
     customerName: boolean;
     destination: boolean;
@@ -143,7 +147,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       }
     }
 
-    onAddOrder({
+    const orderData = {
       orderNumber,
       customerName: customerName.trim(),
       destination: destination.trim(),
@@ -157,7 +161,17 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       phase: initialData ? currentPhase : 'montaje',
       status: initialData && currentPhase !== initialData.phase ? 'pendiente' : (initialData?.status || 'pendiente'),
       completedPhases: newCompletedPhases,
-    });
+    };
+
+    // Show confirmation modal if editing from "Todos" tab
+    if (initialData && isEditingFromTodos) {
+      setPendingOrderData(orderData);
+      setShowConfirmModal(true);
+      return;
+    }
+
+    // Directly call onAddOrder for new orders or non-todos edits
+    onAddOrder(orderData);
 
     // Reset form only if not editing
     if (!initialData) {
@@ -172,6 +186,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
         products: [false]
       });
     }
+  };
+
+  const handleConfirmChanges = () => {
+    if (pendingOrderData) {
+      onAddOrder(pendingOrderData);
+      setShowConfirmModal(false);
+      setPendingOrderData(null);
+    }
+  };
+
+  const handleCancelChanges = () => {
+    setShowConfirmModal(false);
+    setPendingOrderData(null);
   };
 
   return (
@@ -426,6 +453,34 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
       >
         {initialData ? 'Actualizar Pedido' : 'Registrar Pedido'}
       </Button>
+
+      {/* Confirmation Modal */}
+      <AlertDialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
+        <AlertDialogContent className="max-w-md mx-auto">
+          <AlertDialogHeader>
+            <AlertDialogTitle>¿Confirmar cambios?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Has realizado cambios en este pedido. ¿Estás seguro de que deseas continuar?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              onClick={handleCancelChanges}
+              className="flex items-center gap-2 bg-red-100 text-red-700 border-red-300 hover:bg-red-200"
+            >
+              <span className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">❌</span>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleConfirmChanges}
+              className="flex items-center gap-2 bg-green-100 text-green-700 border-green-300 hover:bg-green-200"
+            >
+              <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✅</span>
+              Confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </form>
   );
 };
