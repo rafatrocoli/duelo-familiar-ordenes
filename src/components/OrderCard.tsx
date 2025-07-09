@@ -224,7 +224,10 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               ¿Confirmar finalización?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-sm text-muted-foreground text-center mt-2">
-              Este pedido se marcará como completado y pasará a la siguiente fase. ¿Estás seguro de que deseas continuar?
+              {order.phase === 'pintura' 
+                ? 'Este pedido se marcará como completado. ¿Estás seguro de que deseas continuar?'
+                : 'Este pedido se marcará como completado y pasará a la siguiente fase. ¿Estás seguro de que deseas continuar?'
+              }
             </AlertDialogDescription>
           </AlertDialogHeader>
           
