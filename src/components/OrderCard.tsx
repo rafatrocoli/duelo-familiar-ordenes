@@ -231,7 +231,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             </AlertDialogDescription>
           </AlertDialogHeader>
           
-          <div className="flex justify-center mt-6 mb-2">
+          <div className="flex justify-center mt-4 mb-2">
             <button
               onClick={handleConfirmComplete}
               className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium"
