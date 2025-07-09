@@ -21,7 +21,7 @@ const createEmptyProduct = (): Product => ({
   quantity: 1,
   usageType: 'entierro',
   color: '',
-  coffeeType: 'clasico',
+  coffeeType: 'redonda',
   comments: ''
 });
 
@@ -307,7 +307,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-gray-200">
                       <SelectItem value="entierro" className="rounded-lg">Entierro</SelectItem>
-                      <SelectItem value="encinerar" className="rounded-lg">Encinerar</SelectItem>
+                      <SelectItem value="encinerar" className="rounded-lg">Incinerar</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -318,30 +318,40 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
                   <Label className="text-sm font-medium text-gray-700">
                     Color
                   </Label>
-                  <Input
-                    type="text"
-                    value={product.color}
-                    onChange={(e) => updateProduct(index, 'color', e.target.value)}
-                    placeholder="Color del ataúd"
-                    className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
-                  />
+                  <Select 
+                    value={product.color} 
+                    onValueChange={(value: string) => updateProduct(index, 'color', value)}
+                  >
+                    <SelectTrigger className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent">
+                      <SelectValue placeholder="Seleccionar color" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-gray-200">
+                      <SelectItem value="nogal-mate" className="rounded-lg">Nogal mate</SelectItem>
+                      <SelectItem value="nogal-viejo-mate" className="rounded-lg">Nogal viejo mate</SelectItem>
+                      <SelectItem value="nogal-brillo" className="rounded-lg">Nogal brillo</SelectItem>
+                      <SelectItem value="nogal-viejo-brillo" className="rounded-lg">Nogal viejo brillo</SelectItem>
+                      <SelectItem value="miel-mate" className="rounded-lg">Miel mate</SelectItem>
+                      <SelectItem value="miel-brillo" className="rounded-lg">Miel brillo</SelectItem>
+                      <SelectItem value="sin-pintar" className="rounded-lg">Sin pintar</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">
-                    Tipo de Ataúd
+                    Forma
                   </Label>
                   <Select 
                     value={product.coffeeType} 
                     onValueChange={(value: OrderType) => updateProduct(index, 'coffeeType', value)}
                   >
                     <SelectTrigger className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent">
-                      <SelectValue />
+                      <SelectValue placeholder="Seleccionar forma" />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-gray-200">
-                      <SelectItem value="clasico" className="rounded-lg">Clásico</SelectItem>
-                      <SelectItem value="ecologico" className="rounded-lg">Ecológico</SelectItem>
-                      <SelectItem value="premium" className="rounded-lg">Premium</SelectItem>
+                      <SelectItem value="redonda" className="rounded-lg">Redonda</SelectItem>
+                      <SelectItem value="egipcia" className="rounded-lg">Egipcia</SelectItem>
+                      <SelectItem value="semiredonda" className="rounded-lg">Semiredonda</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

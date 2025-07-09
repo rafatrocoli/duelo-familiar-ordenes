@@ -1,5 +1,5 @@
 
-export type OrderType = 'clasico' | 'ecologico' | 'premium';
+export type OrderType = 'redonda' | 'egipcia' | 'semiredonda';
 export type OrderStatus = 'pendiente' | 'completado';
 export type OrderPhase = 'montaje' | 'carpinteria' | 'pintura' | 'completado';
 
