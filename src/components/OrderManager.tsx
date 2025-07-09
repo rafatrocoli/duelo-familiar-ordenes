@@ -285,8 +285,9 @@ const OrderManager: React.FC = () => {
                   {/* Current Phase Orders */}
                   {currentPhaseOrders.length > 0 && (
                     <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-gray-700 px-2">
-                        En {getDepartmentTitle(activeDepartment)}
+                      <h3 className="text-sm font-semibold text-gray-700 px-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                        Pendientes en {getDepartmentTitle(activeDepartment)}
                       </h3>
                       {currentPhaseOrders.map(order => (
                         <OrderCard
@@ -296,6 +297,7 @@ const OrderManager: React.FC = () => {
                           activeDepartment={activeDepartment}
                           onEditOrder={handleEditOrder}
                           onDeleteOrder={handleDeleteOrder}
+                          isCompletedInPhase={false}
                         />
                       ))}
                     </div>
@@ -304,7 +306,8 @@ const OrderManager: React.FC = () => {
                   {/* Completed Phase Orders */}
                   {completedPhaseOrders.length > 0 && (
                     <div className="space-y-3">
-                      <h3 className="text-sm font-semibold text-gray-500 px-2">
+                      <h3 className="text-sm font-semibold text-green-600 px-2 flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         Completados en {getDepartmentTitle(activeDepartment)}
                       </h3>
                       {completedPhaseOrders.map(order => (
@@ -315,6 +318,7 @@ const OrderManager: React.FC = () => {
                           activeDepartment={activeDepartment}
                           onEditOrder={handleEditOrder}
                           onDeleteOrder={handleDeleteOrder}
+                          isCompletedInPhase={true}
                         />
                       ))}
                     </div>
@@ -342,6 +346,7 @@ const OrderManager: React.FC = () => {
                 activeDepartment={activeDepartment}
                 onEditOrder={handleEditOrder}
                 onDeleteOrder={handleDeleteOrder}
+                isCompletedInPhase={false}
               />
             ));
           })()}

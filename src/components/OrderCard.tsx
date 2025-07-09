@@ -14,9 +14,10 @@ interface OrderCardProps {
   activeDepartment?: string;
   onEditOrder?: (order: Order) => void;
   onDeleteOrder?: (id: string) => void;
+  isCompletedInPhase?: boolean;
 }
 
-const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment, onEditOrder, onDeleteOrder }) => {
+const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepartment, onEditOrder, onDeleteOrder, isCompletedInPhase = false }) => {
   const getTypeLabel = (type: string) => {
     const types = {
       clasico: 'Clásico',
@@ -55,9 +56,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
 
   return (
     <Card className={`border-0 rounded-2xl transition-all duration-200 ${
-      order.status === 'completado' 
-        ? 'bg-gray-50 opacity-80' 
-        : 'bg-white shadow-sm hover:shadow-md'
+      isCompletedInPhase
+        ? 'bg-green-50 border border-green-200 opacity-90' 
+        : order.status === 'completado' 
+          ? 'bg-gray-50 opacity-80' 
+          : 'bg-white shadow-sm hover:shadow-md'
     } ${order.isUrgent && order.status === 'pendiente' ? 'ring-2 ring-red-100' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between mb-3">
@@ -98,7 +101,13 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
           </div>
           
           <div className="flex flex-col items-end gap-2">
-            {order.isUrgent && order.status === 'pendiente' && (
+            {isCompletedInPhase && (
+              <Badge className="bg-green-100 text-green-700 border-green-200 text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                <Check className="w-3 h-3" />
+                COMPLETADO
+              </Badge>
+            )}
+            {order.isUrgent && order.status === 'pendiente' && !isCompletedInPhase && (
               <Badge className="bg-red-100 text-red-700 border-red-200 text-xs px-2 py-1 rounded-full">
                 URGENTE
               </Badge>
