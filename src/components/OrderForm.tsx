@@ -20,7 +20,7 @@ interface OrderFormProps {
 
 const createEmptyProduct = (): Product => ({
   model: '',
-  quantity: 1,
+  quantity: 0,
   usageType: 'entierro',
   color: '',
   coffeeType: 'redonda',
@@ -360,8 +360,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
                   <Input
                     type="number"
                     min="1"
-                    value={product.quantity}
-                    onChange={(e) => updateProduct(index, 'quantity', parseInt(e.target.value) || 1)}
+                    value={product.quantity === 0 ? '' : product.quantity}
+                    onChange={(e) => updateProduct(index, 'quantity', e.target.value === '' ? 0 : parseInt(e.target.value) || 0)}
+                    placeholder="Ingrese cantidad"
                     className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent"
                     required
                   />
