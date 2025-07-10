@@ -110,16 +110,31 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               </p>
               <div className="space-y-1">
                 {order.products.map((product, index) => (
-                  <div key={index} className="text-sm text-gray-600">
-                    <span className="font-medium">
-                      {order.products.length > 1 ? `Pedido ${index + 1}: ` : 'Modelo: '}
-                    </span>
-                    {product.model}
-                    {product.color && <span> - {product.color}</span>}
-                    <span className="ml-2">
-                      <span className="font-medium">Cantidad:</span> {product.quantity} | 
-                      <span className="font-medium"> Tipo:</span> {getUsageTypeLabel(product.usageType)}
-                    </span>
+                  <div key={index} className="bg-gray-50 rounded-lg p-3 space-y-1">
+                    {order.products.length > 1 && (
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                        Pedido {index + 1}
+                      </p>
+                    )}
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium text-gray-900">Modelo:</span> {product.model}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium text-gray-900">Cantidad:</span> {product.quantity}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium text-gray-900">Tipo:</span> {getUsageTypeLabel(product.usageType)}
+                      </p>
+                      {product.color && (
+                        <p className="text-sm text-gray-700">
+                          <span className="font-medium text-gray-900">Color:</span> {product.color}
+                        </p>
+                      )}
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium text-gray-900">Forma:</span> {product.coffeeType}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
