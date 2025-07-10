@@ -98,7 +98,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               <h3 className={`font-semibold text-lg ${
                 order.status === 'completado' ? 'line-through text-gray-400' : 'text-gray-900'
               }`}>
-                {order.customerName}
+                {order.destination}
               </h3>
               {order.isUrgent && order.status === 'pendiente' && (
                 <AlertCircle className="w-4 h-4 text-red-500" />
@@ -106,7 +106,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
             </div>
             <div className="space-y-1">
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Destino:</span> {order.destination}
+                <span className="font-medium">Cliente:</span> {order.customerName}
               </p>
               <div className="space-y-1">
                 {order.products.map((product, index) => (
