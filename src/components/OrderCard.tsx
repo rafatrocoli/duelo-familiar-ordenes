@@ -110,7 +110,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
               </p>
               <div className="space-y-1">
                 {order.products.map((product, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-3 space-y-1">
+                  <div key={index} className="space-y-1">
                     {order.products.length > 1 && (
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                         Pedido {index + 1}
