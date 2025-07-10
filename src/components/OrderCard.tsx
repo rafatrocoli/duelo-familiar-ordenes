@@ -62,6 +62,28 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
     return types[usageType as keyof typeof types] || usageType;
   };
 
+  const getColorLabel = (color: string) => {
+    const colors = {
+      'nogal-mate': 'Nogal mate',
+      'nogal-viejo-mate': 'Nogal viejo mate',
+      'nogal-brillo': 'Nogal brillo',
+      'nogal-viejo-brillo': 'Nogal viejo brillo',
+      'miel-mate': 'Miel mate',
+      'miel-brillo': 'Miel brillo',
+      'sin-pintar': 'Sin pintar'
+    };
+    return colors[color as keyof typeof colors] || color;
+  };
+
+  const getShapeLabel = (shape: string) => {
+    const shapes = {
+      redonda: 'Redonda',
+      egipcia: 'Egipcia',
+      semiredonda: 'Semiredonda'
+    };
+    return shapes[shape as keyof typeof shapes] || shape;
+  };
+
   const shouldShowCompleteButton = () => {
     // Don't show in "Pedidos" tab
     if (activeDepartment === 'pedidos') return false;
@@ -128,11 +150,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                       </p>
                       {product.color && (
                         <p className="text-sm text-gray-700">
-                          <span className="font-medium text-gray-900">Color:</span> {product.color}
+                          <span className="font-medium text-gray-900">Color:</span> {getColorLabel(product.color)}
                         </p>
                       )}
                       <p className="text-sm text-gray-700">
-                        <span className="font-medium text-gray-900">Forma:</span> {product.coffeeType}
+                        <span className="font-medium text-gray-900">Forma:</span> {getShapeLabel(product.coffeeType)}
                       </p>
                     </div>
                   </div>
