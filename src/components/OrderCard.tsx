@@ -104,7 +104,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                 <AlertCircle className="w-4 h-4 text-red-500" />
               )}
             </div>
-            <div className="space-y-1">
+            <div className="space-y-3">
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Cliente:</span> {order.customerName}
               </p>
@@ -138,9 +138,6 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                   </div>
                 ))}
               </div>
-              <p className="text-sm text-gray-500">
-                {format(order.orderDate, "dd MMM, HH:mm", { locale: es })}
-              </p>
             </div>
           </div>
           
