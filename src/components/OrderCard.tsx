@@ -54,6 +54,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
     return phases[phase as keyof typeof phases] || phase;
   };
 
+  const getUsageTypeLabel = (usageType: string) => {
+    const types = {
+      entierro: 'Entierro',
+      incinerar: 'Incinerar'
+    };
+    return types[usageType as keyof typeof types] || usageType;
+  };
+
   const shouldShowCompleteButton = () => {
     // Don't show in "Pedidos" tab
     if (activeDepartment === 'pedidos') return false;
@@ -110,7 +118,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, onToggleStatus, activeDepa
                     {product.color && <span> - {product.color}</span>}
                     <span className="ml-2">
                       <span className="font-medium">Cantidad:</span> {product.quantity} | 
-                      <span className="font-medium"> Tipo:</span> {product.usageType}
+                      <span className="font-medium"> Tipo:</span> {getUsageTypeLabel(product.usageType)}
                     </span>
                   </div>
                 ))}

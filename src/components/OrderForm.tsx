@@ -373,14 +373,14 @@ const OrderForm: React.FC<OrderFormProps> = ({ onAddOrder, initialData, nextOrde
                   </Label>
                   <Select 
                     value={product.usageType} 
-                    onValueChange={(value: 'encinerar' | 'entierro') => updateProduct(index, 'usageType', value)}
+                    onValueChange={(value: 'incinerar' | 'entierro') => updateProduct(index, 'usageType', value)}
                   >
                     <SelectTrigger className="rounded-xl border-gray-200 h-12 px-4 focus:ring-2 focus:ring-black focus:border-transparent">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl border-gray-200">
                       <SelectItem value="entierro" className="rounded-lg">Entierro</SelectItem>
-                      <SelectItem value="encinerar" className="rounded-lg">Incinerar</SelectItem>
+                      <SelectItem value="incinerar" className="rounded-lg">Incinerar</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

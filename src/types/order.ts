@@ -6,7 +6,7 @@ export type OrderPhase = 'montaje' | 'carpinteria' | 'pintura' | 'completado';
 export interface Product {
   model: string;
   quantity: number;
-  usageType: 'encinerar' | 'entierro';
+  usageType: 'incinerar' | 'entierro';
   color: string;
   coffeeType: OrderType;
   comments: string;
