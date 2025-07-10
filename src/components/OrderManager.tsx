@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { X } from 'lucide-react';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
 import BottomNavigation, { Department } from './BottomNavigation';
@@ -257,14 +258,13 @@ const OrderManager: React.FC = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold text-gray-900">Nuevo Pedido</h2>
-                  <Button
+                  <button
                     onClick={() => setShowForm(false)}
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-500"
+                    className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   >
-                    Cancelar
-                  </Button>
+                    <X className="h-4 w-4 text-gray-400" />
+                    <span className="sr-only">Close</span>
+                  </button>
                 </div>
                 <OrderForm onAddOrder={addOrder} nextOrderNumber={getNextOrderNumber()} />
               </div>
