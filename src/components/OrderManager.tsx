@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { X, User } from 'lucide-react';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
 import BottomNavigation, { Department } from './BottomNavigation';
@@ -198,10 +199,22 @@ const OrderManager: React.FC = () => {
       <div className="max-w-md mx-auto bg-white min-h-screen">
         {/* Header - Estilo Revolut */}
         <div className="bg-white px-6 py-6 border-b border-gray-100">
-          <div className="text-center">
+          <div className="flex items-center justify-between">
+            {/* User Avatar */}
+            <Avatar className="w-10 h-10">
+              <AvatarImage src="" alt="Usuario" />
+              <AvatarFallback className="bg-gray-100 text-gray-600">
+                <User className="w-5 h-5" />
+              </AvatarFallback>
+            </Avatar>
+            
+            {/* Title */}
             <h1 className="text-2xl font-bold text-gray-900">
               {getDepartmentTitle(activeDepartment)}
             </h1>
+            
+            {/* Spacer to center the title */}
+            <div className="w-10 h-10"></div>
           </div>
         </div>
 
