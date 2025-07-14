@@ -7,6 +7,7 @@ import { X } from 'lucide-react';
 import OrderForm from './OrderForm';
 import OrderCard from './OrderCard';
 import BottomNavigation, { Department } from './BottomNavigation';
+import FloatingAddButton from './FloatingAddButton';
 import { Order, OrderStatus } from '@/types/order';
 
 const OrderManager: React.FC = () => {
@@ -119,7 +120,7 @@ const OrderManager: React.FC = () => {
     let filtered = orders;
     
     // Filter by department phase first
-    if (activeDepartment !== 'pedidos' && activeDepartment !== 'nuevo') {
+    if (activeDepartment !== 'pedidos') {
       filtered = filtered.filter(order => 
         order.phase === activeDepartment || // Current phase orders
         order.completedPhases.includes(activeDepartment as any) // Orders that completed this phase
@@ -157,18 +158,13 @@ const OrderManager: React.FC = () => {
       pedidos: 'Pedidos',
       montaje: 'Montaje',
       carpinteria: 'Carpintería',
-      pintura: 'Pintura',
-      nuevo: 'Nuevo Pedido'
+      pintura: 'Pintura'
     };
     return titles[department];
   };
 
   const handleDepartmentChange = (department: Department) => {
-    if (department === 'nuevo') {
-      setShowForm(true);
-    } else {
-      setActiveDepartment(department);
-    }
+    setActiveDepartment(department);
   };
 
   const handleEditOrder = (order: Order) => {
@@ -293,7 +289,6 @@ const OrderManager: React.FC = () => {
             return sortedOrders.map(order => {
               // Determine if order is completed in the current phase
               const isCompletedInPhase = activeDepartment !== 'pedidos' && 
-                activeDepartment !== 'nuevo' && 
                 order.completedPhases.includes(activeDepartment as any);
               
               return (
@@ -350,6 +345,11 @@ const OrderManager: React.FC = () => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Floating Add Button */}
+        {!showForm && (
+          <FloatingAddButton onClick={() => setShowForm(true)} />
+        )}
 
         {/* Bottom Navigation */}
         {!showForm && (

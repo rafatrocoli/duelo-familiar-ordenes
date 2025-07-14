@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Hammer, Palette, Settings, Clipboard, Plus } from 'lucide-react';
+import { Hammer, Palette, Settings, Clipboard } from 'lucide-react';
 
-export type Department = 'pedidos' | 'carpinteria' | 'nuevo' | 'montaje' | 'pintura';
+export type Department = 'pedidos' | 'carpinteria' | 'montaje' | 'pintura';
 
 interface BottomNavigationProps {
   activeDepartment: Department;
@@ -29,12 +29,6 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
             className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
           >
             <Settings className="w-6 h-6" />
-          </TabsTrigger>
-          <TabsTrigger 
-            value="nuevo"
-            className="flex items-center justify-center h-14 px-4 rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white text-white hover:text-gray-300 transition-colors"
-          >
-            <Plus className="w-6 h-6" />
           </TabsTrigger>
           <TabsTrigger 
             value="carpinteria"
