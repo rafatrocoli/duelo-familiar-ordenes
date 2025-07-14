@@ -11,7 +11,7 @@ const FloatingAddButton: React.FC<FloatingAddButtonProps> = ({ onClick }) => {
   return (
     <Button
       onClick={onClick}
-      className="fixed bottom-28 left-1/2 transform -translate-x-1/2 w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg transition-all duration-200 hover:scale-105 z-40"
+      className="fixed bottom-32 right-6 w-14 h-14 rounded-full bg-black hover:bg-gray-800 shadow-lg transition-all duration-200 hover:scale-105 z-40"
       size="icon"
     >
       <Plus className="w-6 h-6 text-white" />
